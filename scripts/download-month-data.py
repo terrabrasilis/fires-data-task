@@ -55,16 +55,22 @@ class DownloadWFS:
       self.AUTH=HTTPBasicAuth(user, password)
 
     # Data directory for writing downloaded data
-    self.DATA_DIR=os.path.realpath(os.path.dirname(__file__))
-    self.DATA_DIR=os.getenv("DATA_DIR", self.DATA_DIR)
+    self.DIR=os.path.realpath(os.path.dirname(__file__))
+    self.DIR=os.getenv("DATA_DIR", self.DIR)
 
   def __configForTarget(self):
+    # define the base directory to store downloaded data
+    self.DATA_DIR="{0}/{1}".format(self.DIR,self.TARGET)
+    os.makedirs(self.DATA_DIR, exist_ok=True) # create the output directory if it not exists
+
     if self.TARGET=="focuses":
       self.WORKSPACE_NAME="bdqueimadas"
       self.LAYER_NAME="focos"
+      self.serverLimitByTarget=10000
     else:
       self.WORKSPACE_NAME="deter-amz"
       self.LAYER_NAME="deter_amz"
+      self.serverLimitByTarget=100000
 
     # The output file name (layer_name_start_date_end_date)
     self.OUTPUT_FILENAME="{0}_{1}_{2}".format(self.LAYER_NAME,self.START_DATE,self.END_DATE)
@@ -172,12 +178,13 @@ class DownloadWFS:
     
     return root
 
-  def __getServerLimit(self, serverLimit=10000):
+  def __getServerLimit(self):
     """
     Read the data download service limit via WFS
 
     serverLimit: Optional parameter to inform the default limit on GeoServer
     """
+    serverLimit=self.serverLimitByTarget
     url="{0}?{1}".format(self.__buildBaseURL(),"service=wfs&version=2.0.0&request=GetCapabilities")
 
     XML=self.__xmlRequest(url)
@@ -244,7 +251,7 @@ class DownloadWFS:
     """
     Write start date, end date and number of focuses matched to use on shell script import process
     """
-    output_file="{0}/{1}_acquisition_data_control".format(self.DATA_DIR,self.TARGET)
+    output_file="{0}/acquisition_data_control".format(self.DATA_DIR)
     with open(output_file, 'w') as f:
       f.write("START_DATE=\"{0}\"\n".format(self.START_DATE))
       f.write("END_DATE=\"{0}\"\n".format(self.END_DATE))

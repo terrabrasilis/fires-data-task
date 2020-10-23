@@ -6,3 +6,5 @@ export DATA_DIR
 python3 download-month-data.py
 
 . ./import_focuses.sh
+
+. ./import_alerts.sh
