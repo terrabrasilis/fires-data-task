@@ -1,0 +1,115 @@
+"""
+Created on Thu Sep 24 11:20:25 2020
+
+@author: Luis Maurano
+"""
+
+from osgeo import gdal
+import psycopg2
+import getopt
+
+def main(argv):
+  host = ''
+  port = ''
+  database = ''
+  user = ''
+  password = ''
+  typedata = ''
+  try:
+    opts, args = getopt.getopt(argv,"hH:P:d:u:p:t",["host=","port=","dbname=","user=","pass=", "type="])
+  except getopt.GetoptError:
+    print 'get_class.py -H <hostname or ip> -P <port number> -d <database name> -u <user> -p <password> -t <prodes or car>'
+    sys.exit(2)
+  for opt, arg in opts:
+    if opt == '-h':
+      print 'get_class.py -H <hostname or ip> -P <port number> -d <database name> -u <user> -p <password> -t <prodes or car>'
+      sys.exit()
+    elif opt in ("-H", "--host"):
+      host = arg
+    elif opt in ("-P", "--port"):
+      port = arg
+    elif opt in ("-d", "--dbname"):
+      database = arg
+    elif opt in ("-u", "--user"):
+      user = arg
+    elif opt in ("-p", "--pass"):
+      password = arg
+    elif opt in ("-t", "--type"):
+      typedata = arg
+  run(host, port, database, user, password, typedata)
+
+def run(host='localhost', port='5432', database='dbname',user='postgres', password='postgres', typedata='prodes'):
+  con = psycopg2.connect("host="+host+" dbname="+database+" user="+user+" password="+password+" port="+port)
+
+  classes_prodes = {
+  0: "Outros",
+  1: "Floresta",
+  10: "Desmatamento Consolidado",
+  15: "Desmatamento Recente"
+  }
+  classes_car = {
+  0: "Sem car",
+  10: "Grande",
+  15: "Media",
+  20: "Pequena"
+  }
+
+  # tiff 
+  driver = gdal.GetDriverByName('GTiff')
+  filename = ""
+  if typedata=="prodes":
+    filename = "prodes_agregado.tif" #path to prodes raster
+  else:
+    filename = "car_categories_buffer.tif" #path to car raster
+  
+  dataset = gdal.Open(filename)
+  band = dataset.GetRasterBand(1)
+
+  cols = dataset.RasterXSize
+  rows = dataset.RasterYSize
+
+  transform = dataset.GetGeoTransform()
+
+  xOrigin = transform[0]
+  yOrigin = transform[3]
+  pixelWidth = transform[1]
+  pixelHeight = -transform[5]
+
+  data = band.ReadAsArray(0, 0, cols, rows)
+
+  #sql para pegar focos
+  sql = "SELECT * FROM focos_aqua_referencia "
+  sql = "{0} WHERE longitude >= -73.9783164486977967 AND longitude <= -43.9135843925684242 ".format(sql)
+  sql = "{0} AND latitude >= -18.0406669808370381 and latitude <= 5.2714909087058901 ".format(sql)
+  sql = "{0} ORDER BY id asc".format(sql)
+  cur = con.cursor()
+  cur.execute(sql)
+  campos = cur.fetchall()
+
+  for campo in campos:
+      id = str(campo[0])
+      lat = float(campo[11])
+      lon = float(campo[12])
+      col = int((lon - xOrigin) / pixelWidth)
+      row = int((yOrigin - lat ) / pixelHeight)
+      pixelvalue = data[row][col]
+      query = ''
+      pixelclasse=''
+       # trocar classe_prodes por classes_car
+      if typedata=="prodes":
+        pixelclasse = classes_prodes[pixelvalue]
+        query = "UPDATE focos_aqua_referencia SET classe_prodes = '" + pixelclasse + "' WHERE id = " + id + ";"
+      else:
+        pixelclasse = classes_car[pixelvalue]
+        query = "UPDATE focos_aqua_referencia SET classe_car = '" + pixelclasse + "' WHERE id = " + id + ";"
+
+      cur.execute(query)
+      print (query,id,lat,lon,pixelvalue,pixelclasse)
+      #print (query)
+      
+  con.commit()
+  cur.close()
+  con.close()
+
+if __name__ == "__main__":
+  main(sys.argv[1:])
