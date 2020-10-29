@@ -4,9 +4,9 @@ Created on Thu Sep 24 11:20:25 2020
 @author: Luis Maurano
 """
 
-from osgeo import gdal
-import psycopg2
-import getopt
+#from osgeo import gdal
+#import psycopg2
+import sys, getopt
 
 def main(argv):
   host = ''
@@ -15,14 +15,15 @@ def main(argv):
   user = ''
   password = ''
   typedata = ''
+  data_dir = ''
   try:
-    opts, args = getopt.getopt(argv,"hH:P:d:u:p:t",["host=","port=","dbname=","user=","pass=", "type="])
+    opts, args = getopt.getopt(argv,"hD:H:P:d:u:p:t:",["dir=", "host=","port=","dbname=","user=","pass=", "type="])
   except getopt.GetoptError:
-    print 'get_class.py -H <hostname or ip> -P <port number> -d <database name> -u <user> -p <password> -t <prodes or car>'
+    print("get_class.py -H <hostname or ip> -P <port number> -d <database name> -u <user> -p <password> -t <prodes or car>")
     sys.exit(2)
   for opt, arg in opts:
     if opt == '-h':
-      print 'get_class.py -H <hostname or ip> -P <port number> -d <database name> -u <user> -p <password> -t <prodes or car>'
+      print("get_class.py -H <hostname or ip> -P <port number> -d <database name> -u <user> -p <password> -t <prodes or car>")
       sys.exit()
     elif opt in ("-H", "--host"):
       host = arg
@@ -36,9 +37,13 @@ def main(argv):
       password = arg
     elif opt in ("-t", "--type"):
       typedata = arg
-  run(host, port, database, user, password, typedata)
+    elif opt in ("-D", "--dir"):
+      data_dir = arg
 
-def run(host='localhost', port='5432', database='dbname',user='postgres', password='postgres', typedata='prodes'):
+  #print(data_dir+" "+host+" "+port+" "+database+" "+user+" "+password+" "+typedata)
+  run(host, port, database, user, password, typedata, data_dir)
+
+def run(host='localhost', port='5432', database='dbname', user='postgres', password='postgres', typedata='prodes', data_dir='./'):
   con = psycopg2.connect("host="+host+" dbname="+database+" user="+user+" password="+password+" port="+port)
 
   classes_prodes = {
@@ -58,9 +63,9 @@ def run(host='localhost', port='5432', database='dbname',user='postgres', passwo
   driver = gdal.GetDriverByName('GTiff')
   filename = ""
   if typedata=="prodes":
-    filename = "prodes_agregado.tif" #path to prodes raster
+    filename = "{0}/prodes_agregado.tif".format(data_dir) #prodes raster file
   else:
-    filename = "car_categories_buffer.tif" #path to car raster
+    filename = "{0}/car_categories_buffer.tif".format(data_dir) #car raster file
   
   dataset = gdal.Open(filename)
   band = dataset.GetRasterBand(1)

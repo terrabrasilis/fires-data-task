@@ -31,4 +31,5 @@ gdalbuildvrt prodes_agregado.vrt  prodes_floresta_pv1.tif  prodes_desmate_consol
 gdal_translate prodes_agregado.vrt  prodes_agregado.tif
 
 # 4) from step-to-step
-python3 get-class.py $DATA_DIR"/raster" 
+python3 get-class.py -H $host -P $port -d $database -u $user -p $password -t prodes -D $DATA_DIR"/raster"
+python3 get-class.py -H $host -P $port -d $database -u $user -p $password -t car -D $DATA_DIR"/raster"
