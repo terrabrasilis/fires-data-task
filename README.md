@@ -11,12 +11,10 @@ The expected periodicity is monthly for the acquisition of new data on the focus
 
 CREATE TABLE public.acquisition_data_control
 (
-    id serial,
-    focus_start_date date,
-    focus_end_date date,
-    num_focuses integer,
+    id integer NOT NULL DEFAULT nextval('acquisition_data_control_id_seq'::regclass),
+    start_date date,
+    end_date date,
+    num_rows integer,
+    origin_data character varying(80) COLLATE pg_catalog."default",
     CONSTRAINT acquisition_data_control_id_pk PRIMARY KEY (id)
-)
-WITH (
-    OIDS = FALSE
 );

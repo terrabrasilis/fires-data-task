@@ -125,7 +125,7 @@ class DownloadWFS:
     # if OUTPUTFORMAT is changed, check the output file extension within the get method in this class.
     OUTPUTFORMAT= ("SHAPE-ZIP" if not OUTPUTFORMAT else OUTPUTFORMAT)
     exceptions="text/xml"
-    # define the output projection. We use the layer projection. (Geography/WGS84)
+    # define the output projection. We use the layer projection. (Geography/SIRGAS2000)
     srsName="EPSG:4674"
     # the layer definition
     TYPENAME="{0}:{1}".format(self.WORKSPACE_NAME,self.LAYER_NAME)
