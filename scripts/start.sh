@@ -8,6 +8,9 @@ export DATA_DIR
 # get focuses and alerts for last month
 python3 download-month-data.py
 
+# load postgres parameters from target datadir
+. ./dbconf.sh
+
 . ./import_focuses.sh
 
 . ./import_alerts.sh

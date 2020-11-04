@@ -126,7 +126,7 @@ class DownloadWFS:
     OUTPUTFORMAT= ("SHAPE-ZIP" if not OUTPUTFORMAT else OUTPUTFORMAT)
     exceptions="text/xml"
     # define the output projection. We use the layer projection. (Geography/WGS84)
-    srsName="EPSG:4326"
+    srsName="EPSG:4674"
     # the layer definition
     TYPENAME="{0}:{1}".format(self.WORKSPACE_NAME,self.LAYER_NAME)
     
@@ -155,7 +155,7 @@ class DownloadWFS:
     OUTPUTFORMAT= ("SHAPE-ZIP" if not OUTPUTFORMAT else OUTPUTFORMAT)
     exceptions="text/xml"
     # define the output projection. We use the layer default projection. (Geography/SIRGAS2000)
-    srsName="EPSG:4326"
+    srsName="EPSG:4674"
     # the layer definition
     TYPENAME="{0}:{1}".format(self.WORKSPACE_NAME,self.LAYER_NAME)
     
@@ -241,6 +241,7 @@ class DownloadWFS:
       response=requests.get(url, auth=self.AUTH)
     else:
       response=requests.get(url)
+
     if response.ok:
       with open(output_file, 'wb') as f:
         f.write(response.content)

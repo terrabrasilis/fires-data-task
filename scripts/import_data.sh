@@ -1,7 +1,4 @@
 #!/bin/bash
-# load postgres parameters for target datadir
-. ./dbconf.sh
-
 # define de target directory
 DATA_TARGET="$DATA_DIR/$TARGET"
 # define log file
@@ -49,15 +46,15 @@ then
 
         PROJ4=`gdalsrsinfo -o proj4 $DATA_TARGET/$SHP_NAME.shp`
         # find the EPSG code to reproject
-        SQL="SELECT srid FROM public.spatial_ref_sys WHERE proj4text = $PROJ4"
+        SQL="SELECT srid FROM public.spatial_ref_sys WHERE proj4text = '$PROJ4'"
         EPSG=($($PG_BIN/psql $PG_CON -t -c "$SQL"))
 
         # If table exists change command to append mode
         if [[ "$CREATE_TABLE" = "YES" ]]; then
-            SHP2PGSQL_OPTIONS="-c -s $EPSG:4326 -W 'LATIN1' -g geometries"
+            SHP2PGSQL_OPTIONS="-c -s $EPSG:4674 -W 'LATIN1' -g geometries"
             CREATE_TABLE="NO"
         else
-            SHP2PGSQL_OPTIONS="-a -s $EPSG:4326 -W 'LATIN1' -g geometries"
+            SHP2PGSQL_OPTIONS="-a -s $EPSG:4674 -W 'LATIN1' -g geometries"
         fi
 
         # import shapefiles

@@ -4,8 +4,8 @@ Created on Thu Sep 24 11:20:25 2020
 @author: Luis Maurano
 """
 
-#from osgeo import gdal
-#import psycopg2
+from osgeo import gdal
+import psycopg2
 import sys, getopt
 
 def main(argv):
@@ -47,16 +47,16 @@ def run(host='localhost', port='5432', database='dbname', user='postgres', passw
   con = psycopg2.connect("host="+host+" dbname="+database+" user="+user+" password="+password+" port="+port)
 
   classes_prodes = {
-  0: "Outros",
-  1: "Floresta",
-  10: "Desmatamento Consolidado",
-  15: "Desmatamento Recente"
+    0: "Outros",
+    1: "Floresta",
+    10: "Desmatamento Consolidado",
+    15: "Desmatamento Recente"
   }
   classes_car = {
-  0: "Sem car",
-  10: "Grande",
-  15: "Media",
-  20: "Pequena"
+    0: "Sem car",
+    10: "Grande",
+    15: "Media",
+    20: "Pequena"
   }
 
   # tiff 
@@ -92,25 +92,24 @@ def run(host='localhost', port='5432', database='dbname', user='postgres', passw
   campos = cur.fetchall()
 
   for campo in campos:
-      id = str(campo[0])
-      lat = float(campo[11])
-      lon = float(campo[12])
-      col = int((lon - xOrigin) / pixelWidth)
-      row = int((yOrigin - lat ) / pixelHeight)
-      pixelvalue = data[row][col]
-      query = ''
-      pixelclasse=''
-       # trocar classe_prodes por classes_car
-      if typedata=="prodes":
-        pixelclasse = classes_prodes[pixelvalue]
-        query = "UPDATE focos_aqua_referencia SET classe_prodes = '" + pixelclasse + "' WHERE id = " + id + ";"
-      else:
-        pixelclasse = classes_car[pixelvalue]
-        query = "UPDATE focos_aqua_referencia SET classe_car = '" + pixelclasse + "' WHERE id = " + id + ";"
+    id = str(campo[0])
+    lat = float(campo[11])
+    lon = float(campo[12])
+    col = int((lon - xOrigin) / pixelWidth)
+    row = int((yOrigin - lat ) / pixelHeight)
+    pixelvalue = data[row][col]
+    query = ''
+    pixelclasse=''
+      # trocar classe_prodes por classes_car
+    if typedata=="prodes":
+      pixelclasse = classes_prodes[pixelvalue]
+      query = "UPDATE focos_aqua_referencia SET classe_prodes = '" + pixelclasse + "' WHERE id = " + id + ";"
+    else:
+      pixelclasse = classes_car[pixelvalue]
+      query = "UPDATE focos_aqua_referencia SET classe_car = '" + pixelclasse + "' WHERE id = " + id + ";"
 
-      cur.execute(query)
-      print (query,id,lat,lon,pixelvalue,pixelclasse)
-      #print (query)
+    cur.execute(query)
+    print (query,id,lat,lon,pixelvalue,pixelclasse)
       
   con.commit()
   cur.close()

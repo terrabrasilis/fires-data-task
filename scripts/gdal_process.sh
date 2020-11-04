@@ -4,10 +4,7 @@ SQL="SELECT geom FROM "$OUTPUT_TABLE" WHERE view_date >= '$DETER_VIEW_DATE' "
 SQL=$SQL"and classname in ('DESMATAMENTO_VEG','DESMATAMENTO_CR','MINERACAO')"
 PGCONNECTION="host=$host port=$port dbname=$database user=$user password=$PGPASSWORD"
 
-if[[ ! -d $DATA_DIR"/raster" ]];then
-  mkdir $DATA_DIR"/raster"
-fi
-cd $DATA_DIR"/raster"
+cd $DATA_DIR"/"
 
 # 2.3) from step-to-step
 gdal_rasterize -burn 15 -tr 0.000268999526293 -0.000269000921852 \
