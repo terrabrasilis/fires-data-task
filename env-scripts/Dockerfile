@@ -32,23 +32,25 @@ ENV TZ=America/Sao_Paulo
 ENV INSTALL_PATH /usr/local
 # the data directory for put generated files 
 ENV SHARED_DIR $INSTALL_PATH/data
+# the scripts directory
+ENV SCRIPT_DIR $INSTALL_PATH/scripts-shell
 
 # create directories
 RUN mkdir -p ${SHARED_DIR} \
-    && mkdir -p $INSTALL_PATH/scripts-shell/ \
+    && mkdir -p ${SCRIPT_DIR} \
     && mkdir -p ${SHARED_DIR}/logs \
     && touch ${SHARED_DIR}/logs/exec_monthly.log
 
 # INSTALL SCRIPTS
 # ------------------------------------------------------
-COPY scripts/ $INSTALL_PATH/scripts-shell/
+COPY scripts/ $SCRIPT_DIR/
 ADD env-scripts/exec_monthly.sh $INSTALL_PATH/
 ADD env-scripts/monthly.cron /etc/cron.d/monthly-cron
 ADD env-scripts/docker-entrypoint.sh $INSTALL_PATH/bin/docker-entrypoint.sh
 ADD env-scripts/requirements.txt $INSTALL_PATH/
 
 RUN pip3 install -r $INSTALL_PATH/requirements.txt \
-    && chmod +x $INSTALL_PATH/scripts-shell/*.sh \
+    && chmod +x $SCRIPT_DIR/*.sh \
     && chmod +x $INSTALL_PATH/*.sh \
     && chmod 0644 /etc/cron.d/monthly-cron \
     && crontab -l | { cat; cat /etc/cron.d/monthly-cron; } | crontab - \

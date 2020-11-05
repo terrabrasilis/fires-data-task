@@ -1,2 +1,3 @@
 #!/bin/bash
-/usr/local/scripts-shell/start.sh
+source /etc/environment
+"$SCRIPT_DIR/start.sh"
