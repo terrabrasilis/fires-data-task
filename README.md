@@ -9,6 +9,7 @@ The expected periodicity is monthly for the acquisition of new data on the focus
 
 ### Table to control the data acquisition process
 
+```sql
 CREATE TABLE public.acquisition_data_control
 (
     id integer NOT NULL DEFAULT nextval('acquisition_data_control_id_seq'::regclass),
@@ -18,3 +19,4 @@ CREATE TABLE public.acquisition_data_control
     origin_data character varying(80) COLLATE pg_catalog."default",
     CONSTRAINT acquisition_data_control_id_pk PRIMARY KEY (id)
 );
+```
