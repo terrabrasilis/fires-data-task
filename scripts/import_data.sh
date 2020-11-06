@@ -46,7 +46,7 @@ then
 
         PROJ4=`gdalsrsinfo -o proj4 $DATA_TARGET/$SHP_NAME.shp`
         # find the EPSG code to reproject
-        SQL="SELECT srid FROM public.spatial_ref_sys WHERE proj4text = '$PROJ4'"
+        SQL="SELECT srid FROM public.spatial_ref_sys WHERE proj4text = $PROJ4"
         EPSG=($($PG_BIN/psql $PG_CON -t -c "$SQL"))
 
         # If table exists change command to append mode
