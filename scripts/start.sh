@@ -1,19 +1,24 @@
 #!/bin/bash
+# to debug in localhost
+# SCRIPT_DIR=`pwd`
+# SHARED_DIR=$SCRIPT_DIR"/../data"
 # The view date reference of DETER used to deter_rasterize in the SQL filter. (view_date >= '2019-08-01')
 DETER_VIEW_DATE="2019-08-01"
+# to store run log
+DATE_LOG=$(date +"%Y-%m-%d_%H:%M:%S")
 # The data work directory.
 DATA_DIR=$SHARED_DIR
 export DATA_DIR
 # go to the scripts directory
 cd $SCRIPT_DIR
 # get focuses and alerts for last month
-python3 download-month-data.py
+#python3 download-month-data.py
 
 # load postgres parameters from target datadir
 . ./dbconf.sh
 
-. ./import_focuses.sh
+. ./import_focuses.sh >> "$DATA_DIR/import_focuses_$DATE_LOG.log" 2>&1
 
-. ./import_alerts.sh
+. ./import_alerts.sh >> "$DATA_DIR/import_alerts_$DATE_LOG.log" 2>&1
 
-. ./gdal_process.sh
+. ./gdal_process.sh >> "$DATA_DIR/gdal_process_$DATE_LOG.log" 2>&1
