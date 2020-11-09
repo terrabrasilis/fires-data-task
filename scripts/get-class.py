@@ -83,9 +83,10 @@ def run(host='localhost', port='5432', database='dbname', user='postgres', passw
   data = band.ReadAsArray(0, 0, cols, rows)
 
   #sql para pegar focos
-  sql = "SELECT * FROM focos_aqua_referencia "
+  sql = "SELECT id,latitude,longitude FROM focos_aqua_referencia "
   sql = "{0} WHERE longitude >= -73.9783164486977967 AND longitude <= -43.9135843925684242 ".format(sql)
   sql = "{0} AND latitude >= -18.0406669808370381 and latitude <= 5.2714909087058901 ".format(sql)
+  sql = "{0} AND (classe_car IS NULL OR classe_prodes IS NULL) ".format(sql)
   sql = "{0} ORDER BY id asc".format(sql)
   cur = con.cursor()
   cur.execute(sql)
@@ -93,8 +94,8 @@ def run(host='localhost', port='5432', database='dbname', user='postgres', passw
 
   for campo in campos:
     id = str(campo[0])
-    lat = float(campo[11])
-    lon = float(campo[12])
+    lat = float(campo[1])
+    lon = float(campo[2])
     col = int((lon - xOrigin) / pixelWidth)
     row = int((yOrigin - lat ) / pixelHeight)
     pixelvalue = data[row][col]
