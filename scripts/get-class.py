@@ -53,7 +53,7 @@ def run(host='localhost', port='5432', database='dbname', user='postgres', passw
     15: "Desmatamento Recente"
   }
   classes_car = {
-    0: "Sem car",
+    0: "Sem CAR",
     10: "Grande",
     15: "Media",
     20: "Pequena"
