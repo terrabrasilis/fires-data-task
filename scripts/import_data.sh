@@ -44,10 +44,14 @@ then
         SHP_NAME=`basename $SHP_NAME`
         SHP_NAME=`echo $SHP_NAME | cut -d "." -f 1`
 
-        PROJ4=`gdalsrsinfo -o proj4 $DATA_TARGET/$SHP_NAME.shp`
-        # find the EPSG code to reproject
-        SQL="SELECT srid FROM public.spatial_ref_sys WHERE proj4text = $PROJ4"
-        EPSG=($($PG_BIN/psql $PG_CON -t -c "$SQL"))
+        # It's do not work on new environment. Need investigation...
+        # PROJ4=`gdalsrsinfo -o proj4 $DATA_TARGET/$SHP_NAME.shp`
+        # # find the EPSG code to reproject
+        # SQL="SELECT srid FROM public.spatial_ref_sys WHERE proj4text = $PROJ4"
+        # EPSG=($($PG_BIN/psql $PG_CON -t -c "$SQL"))
+
+        # force the same projection used to download the data (Geography/SIRGAS2000)
+        EPSG="4674"
 
         # If table exists change command to append mode
         if [[ "$CREATE_TABLE" = "YES" ]]; then
