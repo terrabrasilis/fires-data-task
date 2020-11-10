@@ -109,4 +109,5 @@ http://150.163.2.93
 
 # Atualizar os dados no Dashboard
 
-A atualização dos daods no dashboard deve ser executada no servidor onde o dashboard está instalado rodando um script específico para esse fim.
+A atualização dos dados no dashboard deve ser executada no servidor onde o dashboard está instalado rodando um script específico para esse fim.
+Este script irá baixar um arquivo JSON para cada tema, Desmatamento ou CAR, diretamente de um serviço WFS proveniente de camadas específicas no GeoServer do TerraBrasilis que apontam para o banco de publicação no qual os dados gerados por este script são inseridos.
