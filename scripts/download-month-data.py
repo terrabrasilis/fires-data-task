@@ -258,17 +258,23 @@ class DownloadWFS:
       f.write("END_DATE=\"{0}\"\n".format(self.END_DATE))
       f.write("numberMatched={0}".format(self.numberMatched))
 
-  def get(self):
+  def getFocuses(self):
     # download Focuses of fire
     self.TARGET="focuses"
     self.__pagination()
     # used to write some information into a file that used for import data process
     self.__setMetadataResults()
+
+  def getAlerts(self):
     # download DETER Alerts
     self.TARGET="alerts"
     self.__pagination()
     # used to write some information into a file that used for import data process
     self.__setMetadataResults()
+
+  def get(self):
+    self.getFocuses()
+    self.getAlerts()
 
 # end of class
 
@@ -278,5 +284,8 @@ down=DownloadWFS()
 # To call with credentials (needs change the layer name)
 # down=DownloadWFS("user","pass")
 
-# Call download
-down.get()
+# Call download for get all data
+# down.get()
+
+# Call download for get Alerts
+down.getAlerts()
