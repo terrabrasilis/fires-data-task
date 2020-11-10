@@ -58,7 +58,11 @@ Os scripts geram logs de saída dos processos executados e arquivos raster (TIFs
 Para verificar os resultados no banco de dados, a seguintes consultas (SQL) podem ser utilizadas:
 
 ```sql
+SELECT COUNT(*), MAX(view_date) FROM public.deter_all_amazonia WHERE view_date>'2020-09-30'
 
+SELECT COUNT(*), MAX(datahora) FROM public.focos_aqua_referencia WHERE classe_car IS NULL
+-- OR
+SELECT COUNT(*), MAX(datahora) FROM public.focos_aqua_referencia WHERE datahora>'2020-09-30'
 ```
 
 ## Caso necessário executar novamente
