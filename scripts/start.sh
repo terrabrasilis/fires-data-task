@@ -1,14 +1,14 @@
 #!/bin/bash
 # to debug in localhost
-# SCRIPT_DIR=`pwd`
-# SHARED_DIR=$SCRIPT_DIR"/../data"
-# The view date reference of DETER used to deter_rasterize in the SQL filter. (view_date >= '2019-08-01')
-DETER_VIEW_DATE="2019-08-01"
+SCRIPT_DIR=`pwd`
+SHARED_DIR=$SCRIPT_DIR"/../data"
 # to store run log
 DATE_LOG=$(date +"%Y-%m-%d_%H:%M:%S")
 # The data work directory.
 DATA_DIR=$SHARED_DIR
 export DATA_DIR
+# The view date reference of DETER used to deter_rasterize in the SQL filter. (view_date >= '2019-08-01')
+DETER_VIEW_DATE=$(cat $DATA_DIR/config/deter_view_date)
 # go to the scripts directory
 cd $SCRIPT_DIR
 # get focuses and alerts for last month
