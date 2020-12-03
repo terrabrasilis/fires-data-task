@@ -12,7 +12,7 @@ DETER_VIEW_DATE=$(cat $DATA_DIR/config/deter_view_date)
 # go to the scripts directory
 cd $SCRIPT_DIR
 # get focuses and alerts for last month
-#python3 download-month-data.py
+python3 download-month-data.py
 
 # load postgres parameters from target datadir
 . ./dbconf.sh
