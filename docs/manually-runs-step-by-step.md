@@ -16,7 +16,7 @@ Sáo pré-requisitos para a execução dos scripts:
 - Acesso SSH ao servidor onde os scripts estão instalados;
 - Obtenção do shapefile de desmatamentos DETER do mês de interesse;
 - Obtenção do shapefile de focos de Queimadas do mês de interesse;
-- Copia dos arquivos de identificação dos shapefiles para junto dos shapes de interesse;
+- Copia dos arquivos de identificação dos shapefiles para junto dos shapes de interesse (ver acquisition_data_control na sessão passo a passo);
 - Verificação dos dados de configuração de acesso ao banco Postgres (opcional);
 - Verificação da data de referência para o DETER (opcional - necessário apenas quando novos dados PRODES forem incorporados no tif de desmatamentos recentes);
 - Os arquivos em formato TIF, definidos como entrada dos processos, devem existir no diretório raiz: /docker/data/fires/raster
@@ -45,7 +45,7 @@ O script usa o seguinte diretório base para ler e escrever: /docker/data/fires/
   - Se necessário, atualizar as informações dos arquivos pgconfig e deter_view_date em /docker/data/fires/raster/config/
 - Rodar o comando para iniciar o processo:
   ```sh
-  generate_fires_data.sh
+  manually_generate_fires_data.sh
   ```
 
 # Pós-processamento
