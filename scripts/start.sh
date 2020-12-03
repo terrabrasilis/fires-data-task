@@ -1,7 +1,7 @@
 #!/bin/bash
 # to debug in localhost
-SCRIPT_DIR=`pwd`
-SHARED_DIR=$SCRIPT_DIR"/../data"
+# SCRIPT_DIR=`pwd`
+# SHARED_DIR=$SCRIPT_DIR"/../data"
 # to store run log
 DATE_LOG=$(date +"%Y-%m-%d_%H:%M:%S")
 # The data work directory.
