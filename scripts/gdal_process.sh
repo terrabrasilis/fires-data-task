@@ -11,10 +11,10 @@ gdal_rasterize -burn 15 -tr 0.000268999526293 -0.000269000921852 \
 -te -73.9783164 -18.0406670 -43.9135844 5.2714909 \
 -co "COMPRESS=LZW" \
 -a_nodata 0 -ot Byte PG:"$PGCONNECTION" \
--sql "$SQL" "deter_since_"$DETER_VIEW_DATE"_pv15.tif"
+-sql "$SQL" "deter_since_${DETER_VIEW_DATE}_pv15.tif"
 
 # 2.4) from step-to-step
-gdalbuildvrt prodes_deter_desmate_recente_pv15.vrt prodes_desmate_recente_pv15.tif "deter_since_"$DETER_VIEW_DATE"_pv15.tif"
+gdalbuildvrt prodes_deter_desmate_recente_pv15.vrt prodes_desmate_recente_pv15.tif "deter_since_${DETER_VIEW_DATE}_pv15.tif"
 gdal_translate prodes_deter_desmate_recente_pv15.vrt  prodes_deter_desmate_recente_pv15.tif
 
 # 3.1) from step-to-step (gdal3 is needed)
