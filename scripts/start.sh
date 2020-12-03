@@ -11,10 +11,19 @@ export DATA_DIR
 DETER_VIEW_DATE=$(cat $DATA_DIR/config/deter_view_date)
 # go to the scripts directory
 cd $SCRIPT_DIR
+# load geoserver user and password from config file in config/gsconfig
+. ./gsconfig.sh
+
+echo $FOCUSES_USER
+echo $FOCUSES_PASS
+echo $ALERTS_USER
+echo $ALERTS_PASS
+
+exit
 # get focuses and alerts for last month
 python3 download-month-data.py
 
-# load postgres parameters from target datadir
+# load postgres parameters from config file in config/pgconfig
 . ./dbconf.sh
 
 . ./import_focuses.sh >> "$DATA_DIR/import_focuses_$DATE_LOG.log" 2>&1

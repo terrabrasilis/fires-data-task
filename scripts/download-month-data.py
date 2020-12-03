@@ -35,7 +35,7 @@ class DownloadWFS:
     parameter values ​​in accordance with the respective notes.
     """
 
-  def __init__(self,user=None,password=None):
+  def __init__(self):
     """
     Constructor with predefined settings.
 
@@ -48,12 +48,6 @@ class DownloadWFS:
     downloaded in parts.
     """
     self.START_DATE,self.END_DATE=self.__getLastMonthRangeDate()
-
-    self.AUTH=None
-
-    if user and password:
-      self.AUTH=HTTPBasicAuth(user, password)
-
     # Data directory for writing downloaded data
     self.DIR=os.path.realpath(os.path.dirname(__file__))
     self.DIR=os.getenv("DATA_DIR", self.DIR)
@@ -63,14 +57,26 @@ class DownloadWFS:
     self.DATA_DIR="{0}/{1}".format(self.DIR,self.TARGET)
     os.makedirs(self.DATA_DIR, exist_ok=True) # create the output directory if it not exists
 
+    self.AUTH=None
+    user=None
+    password=None
+
     if self.TARGET=="focuses":
       self.WORKSPACE_NAME="bdqueimadas"
       self.LAYER_NAME="focos"
       self.serverLimitByTarget=10000
+      user=os.getenv("FOCUSES_USER", user)
+      password=os.getenv("FOCUSES_PASS", password)
+      if user and password:
+        self.AUTH=HTTPBasicAuth(user, password)
     else:
       self.WORKSPACE_NAME="deter-amz"
       self.LAYER_NAME="deter_amz"
       self.serverLimitByTarget=100000
+      user=os.getenv("ALERTS_USER", user)
+      password=os.getenv("ALERTS_PASS", password)
+      if user and password:
+        self.AUTH=HTTPBasicAuth(user, password)
 
     # The output file name (layer_name_start_date_end_date)
     self.OUTPUT_FILENAME="{0}_{1}_{2}".format(self.LAYER_NAME,self.START_DATE,self.END_DATE)
