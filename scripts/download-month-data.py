@@ -71,7 +71,7 @@ class DownloadWFS:
         self.AUTH=HTTPBasicAuth(user, password)
     else:
       self.WORKSPACE_NAME="deter-amz"
-      self.LAYER_NAME="deter_amz"
+      self.LAYER_NAME="deter_amz_auth"
       self.serverLimitByTarget=100000
       user=os.getenv("ALERTS_USER", user)
       password=os.getenv("ALERTS_PASS", password)
