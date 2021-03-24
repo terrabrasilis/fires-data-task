@@ -7,7 +7,7 @@ services:
     container_name: fires-data-task
     restart: always
     volumes:
-      - '/docker/data/fires/raster:/usr/local/data'
+      - '/data/fires/raster:/usr/local/data'
     networks:
       - proxy_default
 
