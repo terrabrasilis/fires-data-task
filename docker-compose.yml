@@ -8,3 +8,9 @@ services:
     restart: always
     volumes:
       - '/docker/data/fires/raster:/usr/local/data'
+    networks:
+      - proxy_default
+
+networks:
+  proxy_default:
+    external: true
