@@ -62,7 +62,7 @@ class DownloadWFS:
     password=None
 
     if self.TARGET=="focuses":
-      self.WORKSPACE_NAME="bdqueimadas"
+      self.WORKSPACE_NAME="terrabrasilis"
       self.LAYER_NAME="focos"
       self.serverLimitByTarget=10000
       user=os.getenv("FOCUSES_USER", user)
@@ -284,14 +284,6 @@ class DownloadWFS:
 
 # end of class
 
-# To call without credentials (uses the public layer name)
 down=DownloadWFS()
-
-# To call with credentials (needs change the layer name)
-# down=DownloadWFS("user","pass")
-
 # Call download for get all data
-# down.get()
-
-# Call download for get Alerts
-down.getAlerts()
+down.get()
