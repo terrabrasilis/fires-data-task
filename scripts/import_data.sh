@@ -76,6 +76,7 @@ then
     # If the execution arrives here, all the data has been imported. 
     $PG_BIN/psql $PG_CON -t -c "$INSERT_INFOS"
     rm "$DATA_TARGET/acquisition_data_control"
+    rm "$DATA_TARGET/*.zip"
 
     # copy new data to output table
     $PG_BIN/psql $PG_CON -t -c "$INSERT"
