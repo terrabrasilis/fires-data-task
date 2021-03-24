@@ -1,0 +1,10 @@
+
+version: '2'
+
+services:
+  fires-data-task:
+    image: 'terrabrasilis/fires-data-task-main:v1.2.0'
+    container_name: fires-data-task
+    restart: always
+    volumes:
+      - '/docker/data/fires/raster:/usr/local/data'
