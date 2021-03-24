@@ -6,9 +6,37 @@ The implementation follows the step by step described in the file ./docs/step-by
 
 The expected periodicity is monthly for the acquisition of new data on the focuses of the Queimadas project and notices of deforestation by the DETER project.
 
+## Configurations
 
-### Table to control the data acquisition process
+There are three configuration files and a control table to prepare the execution environment, as follows:
 
+ - config/deter_view_date (The DETER date reference, used to delimit the boundary between DETER and PRODES deforestation data)
+ - config/gsconfig (user and password settings for GeoServer - DETER and Queimadas)
+ - config/pgconfig (database settings to import and process data)
+ - public.acquisition_data_control (a control table for imported data)
+
+### Config details
+
+ > Content of gsconfig file
+```txt
+FOCUSES_USER="user to login on geoserver of Queimadas."
+FOCUSES_PASS="password to login on geoserver of Queimadas."
+ALERTS_USER="user to login on geoserver of DETER."
+ALERTS_PASS="password to login on geoserver of DETER."
+```
+
+ > Content of pgconfig file
+```txt
+user="postgres"
+host="localhost"
+port="5432"
+database="fires_dashboard"
+password="postgres"
+deteroutputtable="deter_all_amazonia"
+firesoutputtable="focos_aqua_referencia"
+```
+
+ > Table to control the data acquisition process
 ```sql
 CREATE TABLE public.acquisition_data_control
 (
