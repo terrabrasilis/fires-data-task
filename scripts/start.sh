@@ -7,6 +7,8 @@ DATE_LOG=$(date +"%Y-%m-%d_%H:%M:%S")
 # The data work directory.
 DATA_DIR=$SHARED_DIR
 export DATA_DIR
+# Includes verification of new existing and unprocessed data.
+. ./deter_trigger.sh >> "$DATA_DIR/deter_trigger_$DATE_LOG.log" 2>&1
 # The view date reference of DETER used to deter_rasterize in the SQL filter. (view_date >= '2019-08-01')
 DETER_VIEW_DATE=$(cat $DATA_DIR/config/deter_view_date)
 # go to the scripts directory
