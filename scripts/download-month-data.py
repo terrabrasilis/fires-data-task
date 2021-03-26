@@ -103,10 +103,12 @@ class DownloadWFS:
   def __buildBaseURL(self):
     if self.TARGET=="focuses":
       host="queimadas.dgi.inpe.br/queimadas"
+      schema="https"
     else:
       host="terrabrasilis.dpi.inpe.br"
+      schema="http"
     
-    url="http://{0}/geoserver/{1}/{2}/wfs".format(host,self.WORKSPACE_NAME,self.LAYER_NAME)
+    url="{0}://{1}/geoserver/{2}/{3}/wfs".format(schema,host,self.WORKSPACE_NAME,self.LAYER_NAME)
     return url
 
   def __buildQueryString(self, OUTPUTFORMAT=None):
@@ -148,11 +150,6 @@ class DownloadWFS:
     The parameter: OUTPUTFORMAT, the output format for the WFS GetFeature operation described
     in the AllowedValues ​​section in the capabilities document.
     """
-    CQL_FILTER="data_hora_gmt between {0} AND {1} ".format(self.START_DATE,self.END_DATE)
-    CQL_FILTER="{0} AND satelite in ('AQUA_M-T') AND continente_id=8 ".format(CQL_FILTER)
-    CQL_FILTER="{0} AND (pais_complete_id in (33)) AND id_area_industrial=0 ".format(CQL_FILTER)
-    CQL_FILTER="{0} AND id_tipo_area_industrial NOT IN (1,2,3,4,5)".format(CQL_FILTER)
-    CQL_FILTER="{0} AND bioma='Amaz%C3%B4nia'".format(CQL_FILTER)
     # WFS parameters
     SERVICE="WFS"
     REQUEST="GetFeature"
@@ -164,10 +161,17 @@ class DownloadWFS:
     srsName="EPSG:4674"
     # the layer definition
     TYPENAME="{0}:{1}".format(self.WORKSPACE_NAME,self.LAYER_NAME)
+
+    CQL_FILTER="data_hora_gmt between {0} AND {1}".format(self.START_DATE,self.END_DATE)
+    CQL_FILTER="{0} AND satelite='AQUA_M-T' AND continente_id=8".format(CQL_FILTER)
+    CQL_FILTER="{0} AND pais_complete_id=33 AND id_area_industrial=0".format(CQL_FILTER)
+    CQL_FILTER="{0} AND id_tipo_area_industrial NOT IN (1,2,3,4,5)".format(CQL_FILTER)
+    CQL_FILTER="{0} AND bioma='Amazônia'".format(CQL_FILTER)
     
     allLocalParams=locals()
     allLocalParams.pop("self",None)
     PARAMS="&".join("{}={}".format(k,v) for k,v in allLocalParams.items())
+    print(PARAMS)
     return PARAMS
 
   def __xmlRequest(self, url):
@@ -209,7 +213,6 @@ class DownloadWFS:
     url="{0}?{1}".format(self.__buildBaseURL(), self.__buildQueryString())
     url="{0}&{1}".format(url,"resultType=hits")
     numberMatched=0
-
     XML=self.__xmlRequest(url)
     if '{http://www.opengis.net/wfs/2.0}FeatureCollection'==XML.tag:
       numberMatched=XML.find('[@numberMatched]').get('numberMatched')
