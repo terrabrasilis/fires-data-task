@@ -171,7 +171,7 @@ class DownloadWFS:
     allLocalParams=locals()
     allLocalParams.pop("self",None)
     PARAMS="&".join("{}={}".format(k,v) for k,v in allLocalParams.items())
-    print(PARAMS)
+
     return PARAMS
 
   def __xmlRequest(self, url):
@@ -214,7 +214,7 @@ class DownloadWFS:
     url="{0}&{1}".format(url,"resultType=hits")
     numberMatched=0
     XML=self.__xmlRequest(url)
-    if '{http://www.opengis.net/wfs/2.0}FeatureCollection'==XML.tag:
+    if XML and '{http://www.opengis.net/wfs/2.0}FeatureCollection'==XML.tag:
       numberMatched=XML.find('[@numberMatched]').get('numberMatched')
 
     return int(numberMatched)
