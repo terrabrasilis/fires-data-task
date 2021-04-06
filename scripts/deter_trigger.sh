@@ -29,7 +29,9 @@ then
   # is the last date of the DETER data greater than or equal to the first day of the current month?
   if [ "$DETER_LAST_DATE" -ge "$CURRENT_MONTH" ]; then
     echo "DETER last month is complete"
-    echo "$CURRENT_MONTH" > "$DATA_DIR/processed-month-control"
+    echo "Next steps to load and proccess data"
+    export CURRENT_MONTH
+    # echo "$CURRENT_MONTH" > "$DATA_DIR/processed-month-control"
   else
     echo "DETER last month is incomplete"
     exit

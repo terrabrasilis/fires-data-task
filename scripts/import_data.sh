@@ -76,7 +76,14 @@ then
     # If the execution arrives here, all the data has been imported. 
     $PG_BIN/psql $PG_CON -t -c "$INSERT_INFOS"
     rm "$DATA_TARGET/acquisition_data_control"
-    rm "$DATA_TARGET/*.zip"
+    mv $DATA_TARGET/*.zip "$DATA_DIR/oldshps/"
+
+    if [[ "$TARGET" = "alerts" ]];
+    then
+      export CTRL_ALERTS=true
+    else
+      export CTRL_FOCUSES=true
+    fi
 
     # copy new data to output table
     $PG_BIN/psql $PG_CON -t -c "$INSERT"
