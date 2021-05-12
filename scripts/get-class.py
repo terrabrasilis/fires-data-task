@@ -54,6 +54,7 @@ def run(host='localhost', port='5432', database='dbname', user='postgres', passw
   }
   classes_car = {
     0: "Sem CAR",
+    5: "Minifundio",
     10: "Grande",
     15: "Media",
     20: "Pequena"
@@ -65,7 +66,7 @@ def run(host='localhost', port='5432', database='dbname', user='postgres', passw
   if typedata=="prodes":
     filename = "{0}/prodes_agregado.tif".format(data_dir) #prodes raster file
   else:
-    filename = "{0}/car_categories_buffer.tif".format(data_dir) #car raster file
+    filename = "{0}/car_categories_buffer_minifundio.tif".format(data_dir) #car raster file
   
   dataset = gdal.Open(filename)
   band = dataset.GetRasterBand(1)
