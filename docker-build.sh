@@ -12,15 +12,16 @@ else
 fi
 
 VERSION=$(cat PROJECT_VERSION | grep -oP '(?<="version": ")[^"]*')
+VERSION=$(git describe --tags --abbrev=0)
 GIT_BRANCH=$(git symbolic-ref --short HEAD)
 
 echo 
 echo "/######################################################################/"
-echo " Build new image terrabrasilis/fires-data-task-$GIT_BRANCH:v$VERSION "
+echo " Build new image terrabrasilis/fires-data-task-$GIT_BRANCH:$VERSION "
 echo "/######################################################################/"
 echo
 
-docker build $NO_CACHE -t "terrabrasilis/fires-data-task-$GIT_BRANCH:v$VERSION" --build-arg VERSION="v$VERSION" -f env-scripts/Dockerfile .
+docker build $NO_CACHE -t "terrabrasilis/fires-data-task-$GIT_BRANCH:$VERSION" --build-arg VERSION="$VERSION" -f env-scripts/Dockerfile .
 
 # send to dockerhub
 echo 
@@ -29,5 +30,5 @@ if [[ ! "$SEND_TO_HUB" = "yes" ]]; then
     echo "Ok, not send the images."
 else
     echo "Nice, sending the images!"
-    docker push "terrabrasilis/fires-data-task-$GIT_BRANCH:v$VERSION"
+    docker push "terrabrasilis/fires-data-task-$GIT_BRANCH:$VERSION"
 fi
