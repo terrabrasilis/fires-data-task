@@ -11,7 +11,6 @@ else
     echo "Nice, it will be faster than use no-cache option."
 fi
 
-VERSION=$(cat PROJECT_VERSION | grep -oP '(?<="version": ")[^"]*')
 VERSION=$(git describe --tags --abbrev=0)
 GIT_BRANCH=$(git symbolic-ref --short HEAD)
 
