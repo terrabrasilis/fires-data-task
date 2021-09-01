@@ -66,7 +66,7 @@ def run(host='localhost', port='5432', database='dbname', user='postgres', passw
   if typedata=="prodes":
     filename = "{0}/prodes_agregado.tif".format(data_dir) #prodes raster file
   else:
-    filename = "{0}/car_categories_buffer_minifundio.tif".format(data_dir) #car raster file
+    filename = "{0}/car_categories_amz_cerrado.tif".format(data_dir) #car raster file
   
   dataset = gdal.Open(filename)
   band = dataset.GetRasterBand(1)
@@ -83,10 +83,10 @@ def run(host='localhost', port='5432', database='dbname', user='postgres', passw
 
   data = band.ReadAsArray(0, 0, cols, rows)
 
-  #sql para pegar focos
+  #sql para pegar focos 
   sql = "SELECT id,latitude,longitude FROM focos_aqua_referencia "
-  sql = "{0} WHERE longitude >= -73.9783164486977967 AND longitude <= -43.9135843925684242 ".format(sql)
-  sql = "{0} AND latitude >= -18.0406669808370381 and latitude <= 5.2714909087058901 ".format(sql)
+  sql = "{0} WHERE longitude >= -73.9783164486977967 AND longitude <= -41.5219096 ".format(sql)
+  sql = "{0} AND latitude >= -24.6847207 and latitude <= 5.2714909087058901 ".format(sql)
   sql = "{0} AND (classe_car IS NULL OR classe_prodes IS NULL) ".format(sql)
   sql = "{0} ORDER BY id asc".format(sql)
   cur = con.cursor()

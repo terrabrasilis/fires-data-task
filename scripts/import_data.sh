@@ -78,11 +78,16 @@ then
     rm "$DATA_TARGET/acquisition_data_control"
     mv $DATA_TARGET/*.zip "$DATA_DIR/oldshps/"
 
-    if [[ "$TARGET" = "alerts" ]];
+    if [[ "$TARGET" = "alerts_amz" ]];
     then
-      export CTRL_ALERTS=true
+      export CTRL_ALERTS_AMZ=true
     else
-      export CTRL_FOCUSES=true
+      if [[ "$TARGET" = "alerts_cerrado" ]];
+      then
+        export CTRL_ALERTS_CERRADO=true
+      else
+        export CTRL_FOCUSES=true
+      fi
     fi
 
     # copy new data to output table

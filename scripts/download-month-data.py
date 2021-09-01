@@ -70,13 +70,22 @@ class DownloadWFS:
       if user and password:
         self.AUTH=HTTPBasicAuth(user, password)
     else:
-      self.WORKSPACE_NAME="deter-amz"
-      self.LAYER_NAME="deter_amz_auth"
-      self.serverLimitByTarget=100000
-      user=os.getenv("ALERTS_USER", user)
-      password=os.getenv("ALERTS_PASS", password)
-      if user and password:
-        self.AUTH=HTTPBasicAuth(user, password)
+      if self.TARGET=="alerts_amz":
+        self.WORKSPACE_NAME="deter-amz"
+        self.LAYER_NAME="deter_amz_auth"
+        self.serverLimitByTarget=100000
+        user=os.getenv("ALERTS_USER", user)
+        password=os.getenv("ALERTS_PASS", password)
+        if user and password:
+          self.AUTH=HTTPBasicAuth(user, password)
+      else:
+        self.WORKSPACE_NAME="deter-cerrado"
+        self.LAYER_NAME="deter_cerrado_auth"
+        self.serverLimitByTarget=100000
+        user=os.getenv("ALERTS_USER", user)
+        password=os.getenv("ALERTS_PASS", password)
+        if user and password:
+          self.AUTH=HTTPBasicAuth(user, password)
 
     # The output file name (layer_name_start_date_end_date)
     self.OUTPUT_FILENAME="{0}_{1}_{2}".format(self.LAYER_NAME,self.START_DATE,self.END_DATE)
@@ -125,7 +134,7 @@ class DownloadWFS:
     in the AllowedValues ​​section in the capabilities document.
     """
     # Filters example (by date interval and uf)
-    CQL_FILTER="date BETWEEN '{0}' AND '{1}'".format(self.START_DATE,self.END_DATE)
+    CQL_FILTER="view_date BETWEEN '{0}' AND '{1}'".format(self.START_DATE,self.END_DATE)
     # WFS parameters
     SERVICE="WFS"
     REQUEST="GetFeature"
@@ -166,7 +175,7 @@ class DownloadWFS:
     CQL_FILTER="{0} AND satelite='AQUA_M-T' AND continente_id=8".format(CQL_FILTER)
     CQL_FILTER="{0} AND pais_complete_id=33 AND id_area_industrial=0".format(CQL_FILTER)
     CQL_FILTER="{0} AND id_tipo_area_industrial NOT IN (1,2,3,4,5)".format(CQL_FILTER)
-    CQL_FILTER="{0} AND bioma='Amazônia'".format(CQL_FILTER)
+    CQL_FILTER="{0} AND bioma IN ('Amazônia','Cerrado')".format(CQL_FILTER)
     
     allLocalParams=locals()
     allLocalParams.pop("self",None)
@@ -275,8 +284,14 @@ class DownloadWFS:
     self.__setMetadataResults()
 
   def getAlerts(self):
-    # download DETER Alerts
-    self.TARGET="alerts"
+    # download DETER AMZ
+    self.TARGET="alerts_amz"
+    self.__pagination()
+    # used to write some information into a file that used for import data process
+    self.__setMetadataResults()
+
+    # download DETER CERRADO
+    self.TARGET="alerts_cerrado"
     self.__pagination()
     # used to write some information into a file that used for import data process
     self.__setMetadataResults()
