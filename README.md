@@ -32,7 +32,7 @@ host="localhost"
 port="5432"
 database="fires_dashboard"
 password="postgres"
-deteroutputtable="deter_all_amazonia"
+deteroutputtable="deter"
 firesoutputtable="focos_aqua_referencia"
 ```
 
@@ -45,6 +45,7 @@ CREATE TABLE public.acquisition_data_control
     end_date date,
     num_rows integer,
     origin_data character varying(80) COLLATE pg_catalog."default",
+    created_at date DEFAULT (now())::date,
     CONSTRAINT acquisition_data_control_id_pk PRIMARY KEY (id)
 );
 ```
