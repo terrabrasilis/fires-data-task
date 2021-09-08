@@ -276,6 +276,14 @@ class DownloadWFS:
       f.write("END_DATE=\"{0}\"\n".format(self.END_DATE))
       f.write("numberMatched={0}".format(self.numberMatched))
 
+  def __removeMetadataFile(self):
+    """
+    Delete the metadata file if there is an error trying to download the data
+    """
+    output_file="{0}/acquisition_data_control".format(self.DATA_DIR)
+    if os.path.exists(output_file):
+      os.remove(output_file)
+
   def getFocuses(self):
     # download Focuses of fire
     self.TARGET="focuses"
@@ -297,11 +305,18 @@ class DownloadWFS:
     self.__setMetadataResults()
 
   def get(self):
-    self.getFocuses()
-    self.getAlerts()
+    try:
+      self.getFocuses()
+      self.getAlerts()
+    except Exception as error:
+      down.__removeMetadataFile()
+      print("There was an error when trying to download data.")
+      print(error)
 
 # end of class
 
-down=DownloadWFS()
 # Call download for get all data
+down=DownloadWFS()
 down.get()
+
+
