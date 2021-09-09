@@ -29,7 +29,7 @@ zip -j deter_agregado_amz_cerrado.zip deter_agregado_amz_cerrado.tif deter_agreg
 mv deter_agregado_amz_cerrado.zip "${DOWNLOAD_AREA}/"
 
 # remove intermediary data
-rm "deter_since_${DETER_VIEW_DATE}_pv15*.tif"
+rm deter_since_"${DETER_VIEW_DATE}"_pv15*
 rm deter_agregado_amz_cerrado.tif
 
 # 4) from step-to-step
