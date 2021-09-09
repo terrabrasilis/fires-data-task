@@ -24,6 +24,7 @@ RUN apt-get -o Acquire::ForceIPv4=true update \
     cron \
     python3-pip \
     postgis \
+    zip \
     && rm -rf /var/lib/apt/lists/*
 
 # define the timezone to run cron
@@ -32,6 +33,8 @@ ENV TZ=America/Sao_Paulo
 ENV INSTALL_PATH /usr/local
 # the data directory for put generated files 
 ENV SHARED_DIR $INSTALL_PATH/data
+# the common download area
+ENV DOWNLOAD_AREA $INSTALL_PATH/download
 # the scripts directory
 ENV SCRIPT_DIR $INSTALL_PATH/scripts-shell
 
@@ -58,6 +61,6 @@ RUN pip3 install -r $INSTALL_PATH/requirements.txt \
     && ln -s usr/local/bin/docker-entrypoint.sh / # backwards compat
 
 # expose shared dir
-VOLUME ["${SHARED_DIR}"]
+VOLUME ["${SHARED_DIR}", "${DOWNLOAD_AREA}"]
 
 ENTRYPOINT [ "/docker-entrypoint.sh" ]

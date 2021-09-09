@@ -23,8 +23,14 @@ gdal_calc.py -A "deter_since_${DETER_VIEW_DATE}_pv15_dist.tif" --calc="(15*logic
 gdalbuildvrt prodes_agregado.vrt prodes_agregado_amz_cerrado.tif "deter_since_${DETER_VIEW_DATE}_pv15_dist_fat.tif"
 gdal_translate -of GTiff -co "COMPRESS=LZW" -co BIGTIFF=YES prodes_agregado.vrt prodes_agregado.tif
 
+# rename DETER's aggregate deforestation, compress and send to download area
+mv "deter_since_${DETER_VIEW_DATE}_pv15_dist_fat.tif" deter_agregado_amz_cerrado.tif
+zip -j deter_agregado_amz_cerrado.zip deter_agregado_amz_cerrado.tif deter_agregado_amz_cerrado.qml
+mv deter_agregado_amz_cerrado.zip "${DOWNLOAD_AREA}/"
+
 # remove intermediary data
 rm "deter_since_${DETER_VIEW_DATE}_pv15*.tif"
+rm deter_agregado_amz_cerrado.tif
 
 # 4) from step-to-step
 python3 $SCRIPT_DIR"/get-class.py" -H $host -P $port -d $database -u $user -p $password -t prodes -D "$DATA_DIR"
