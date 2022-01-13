@@ -19,7 +19,7 @@ https://gist.github.com/andre-carvalho/45eaf4378fbf91d0514a995a80c69d98
 
 import requests, os, io
 from requests.auth import HTTPBasicAuth
-from datetime import datetime
+from datetime import datetime, timedelta
 from calendar import monthrange
 from xml.etree import ElementTree as xmlTree
 
@@ -47,7 +47,7 @@ class DownloadWFS:
     In this case, this version has been prepared for pagination and the shapefile is
     downloaded in parts.
     """
-    self.START_DATE,self.END_DATE=self.__getLastMonthRangeDate()
+    self.START_DATE,self.END_DATE=self.__getPreviousMonthRangeDate()
     # Data directory for writing downloaded data
     self.DIR=os.path.realpath(os.path.dirname(__file__))
     self.DIR=os.getenv("DATA_DIR", self.DIR)
@@ -90,20 +90,18 @@ class DownloadWFS:
     # The output file name (layer_name_start_date_end_date)
     self.OUTPUT_FILENAME="{0}_{1}_{2}".format(self.LAYER_NAME,self.START_DATE,self.END_DATE)
 
-  def __getLastMonthRangeDate(self):
+  def __getPreviousMonthRangeDate(self):
     """
     The start date and end date are automatically detected using the machine's calendar
     and represent the first and last day of the past month.
     """
-    last_month=(datetime.now().month)-1
-    last_month=last_month if last_month>=10 else "0"+str(last_month)
+    previous_month=(datetime.today().replace(day=1) - timedelta(days=1)).month
+    current_year=datetime.today().year
+    current_year=current_year if datetime.today().month>1 else current_year-1
 
-    current_year=datetime.now().year
-    current_year=current_year if datetime.now().month>1 else current_year-1
-
-    dt0="{0}-{1}-01 00:00:00".format(current_year,last_month)
-    month_days=monthrange(current_year,int(last_month))[1]
-    dt1="{0}-{1}-{2} 23:59:59".format(current_year,last_month,month_days)
+    dt0="{0}-{1}-01 00:00:00".format(current_year,previous_month)
+    month_days=monthrange(current_year,int(previous_month))[1]
+    dt1="{0}-{1}-{2} 23:59:59".format(current_year,previous_month,month_days)
     start_date=datetime.strptime(str(dt0),'%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%dT%H:%M:%S')
     end_date=datetime.strptime(str(dt1),'%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%dT%H:%M:%S')
 
@@ -318,5 +316,3 @@ class DownloadWFS:
 # Call download for get all data
 down=DownloadWFS()
 down.get()
-
-
