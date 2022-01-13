@@ -33,7 +33,7 @@ then
 
     # to control the import shape mode
     CREATE_TABLE="YES"
-    for ZIP_FILE in `ls $DATA_TARGET/*.zip | awk {'print $1'}`
+    for ZIP_FILE in `ls $DATA_TARGET/*${START_DATE}*${END_DATE}*.zip | awk {'print $1'}`
     do
       FILE_NAME=`basename $ZIP_FILE`
 
