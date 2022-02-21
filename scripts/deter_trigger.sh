@@ -23,6 +23,6 @@ PROJECT_NAME="deter-amz"
 # check to AMZ
 . ./deter_update_check.sh
 
-PROJECT_NAME="deter-cerrado"
+PROJECT_NAME="deter-cerrado-nb"
 # check to CERRADO
 . ./deter_update_check.sh

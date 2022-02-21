@@ -79,7 +79,7 @@ class DownloadWFS:
         if user and password:
           self.AUTH=HTTPBasicAuth(user, password)
       else:
-        self.WORKSPACE_NAME="deter-cerrado"
+        self.WORKSPACE_NAME="deter-cerrado-nb"
         self.LAYER_NAME="deter_cerrado_auth"
         self.serverLimitByTarget=100000
         user=os.getenv("ALERTS_USER", user)
