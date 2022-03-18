@@ -20,7 +20,7 @@ gdal_proximity.py "deter_since_${DETER_VIEW_DATE}_pv15.tif" "deter_since_${DETER
 gdal_calc.py -A "deter_since_${DETER_VIEW_DATE}_pv15_dist.tif" --calc="(15*logical_and(A>=0,A<=17))" --NoDataValue=0 --outfile "deter_since_${DETER_VIEW_DATE}_pv15_dist_fat.tif"
 
 # 2.4) from step-to-step
-gdalbuildvrt prodes_agregado.vrt prodes_agregado_amz_cerrado.tif "deter_since_${DETER_VIEW_DATE}_pv15_dist_fat.tif"
+gdalbuildvrt prodes_agregado.vrt prodes_agregado_vseg_amz_cerrado.tif "deter_since_${DETER_VIEW_DATE}_pv15_dist_fat.tif"
 gdal_translate -of GTiff -co "COMPRESS=LZW" -co BIGTIFF=YES prodes_agregado.vrt prodes_agregado.tif
 
 # rename DETER's aggregate deforestation, compress and send to download area
