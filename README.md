@@ -1,5 +1,7 @@
 ## Preparation of fire focuses data
 
+***Used to load and processing data for fires dashboard**
+
 Automation or semi-automation to prepare data of fire spots for the panel of focuses versus deforestation areas and CAR's rural real estate base.
 
 The implementation follows the step by step described in the file ./docs/step-by-step-description.txt.
