@@ -3,8 +3,6 @@ Created on Thu Sep 24 11:20:25 2020
 
 @author: Luis Maurano
 """
-
-from turtle import update
 from osgeo import gdal
 import psycopg2
 import sys, getopt
