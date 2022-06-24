@@ -8,12 +8,8 @@
 #--------- Generic stuff all our Dockerfiles should start with so we get caching ------------
 FROM osgeo/gdal:ubuntu-small-3.2.0
 
-ARG VERSION=x.y
-ENV VERSION=$VERSION
-
 LABEL "br.inpe.dpi"="INPE/DPI-TerraBrasilis" \
 br.inpe.dpi.terrabrasilis="script-tasks" \
-version=${VERSION} \
 author="Andre Carvalho" \
 author.email="andre.carvalho@inpe.br" \
 description="Scripts for data preparation of fire focuses."
