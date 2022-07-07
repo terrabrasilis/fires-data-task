@@ -67,26 +67,22 @@ class DownloadWFS:
       self.serverLimitByTarget=10000
       user=os.getenv("FOCUSES_USER", user)
       password=os.getenv("FOCUSES_PASS", password)
-      if user and password:
-        self.AUTH=HTTPBasicAuth(user, password)
     else:
       if self.TARGET=="alerts_amz":
         self.WORKSPACE_NAME="deter-amz"
         self.LAYER_NAME="deter_amz_auth"
         self.serverLimitByTarget=100000
-        user=os.getenv("ALERTS_USER", user)
-        password=os.getenv("ALERTS_PASS", password)
-        if user and password:
-          self.AUTH=HTTPBasicAuth(user, password)
       else:
         self.WORKSPACE_NAME="deter-cerrado-nb"
         self.LAYER_NAME="deter_cerrado_auth"
         self.serverLimitByTarget=100000
-        user=os.getenv("ALERTS_USER", user)
-        password=os.getenv("ALERTS_PASS", password)
-        if user and password:
-          self.AUTH=HTTPBasicAuth(user, password)
+      
+      user=os.getenv("ALERTS_USER", user)
+      password=os.getenv("ALERTS_PASS", password)
 
+    if user and password:
+      self.AUTH=HTTPBasicAuth(user, password)
+      
     # The output file name (layer_name_start_date_end_date)
     self.OUTPUT_FILENAME="{0}_{1}_{2}".format(self.LAYER_NAME,self.START_DATE,self.END_DATE)
 
@@ -109,12 +105,12 @@ class DownloadWFS:
 
   def __buildBaseURL(self):
     if self.TARGET=="focuses":
-      host="queimadas.dgi.inpe.br/queimadas"
+      host="queimadas.dgi.inpe.br"
       schema="https"
     else:
       host="terrabrasilis.dpi.inpe.br"
       schema="http"
-    
+
     url="{0}://{1}/geoserver/{2}/{3}/wfs".format(schema,host,self.WORKSPACE_NAME,self.LAYER_NAME)
     return url
 
@@ -129,7 +125,7 @@ class DownloadWFS:
     Building the query string to call the WFS service for DETER alerts.
 
     The parameter: OUTPUTFORMAT, the output format for the WFS GetFeature operation described
-    in the AllowedValues ​​section in the capabilities document.
+    in the AllowedValues section in the capabilities document.
     """
     # Filters example (by date interval and uf)
     CQL_FILTER="view_date BETWEEN '{0}' AND '{1}'".format(self.START_DATE,self.END_DATE)
@@ -155,7 +151,7 @@ class DownloadWFS:
     Building the query string to call the WFS service for focuses of fire.
 
     The parameter: OUTPUTFORMAT, the output format for the WFS GetFeature operation described
-    in the AllowedValues ​​section in the capabilities document.
+    in the AllowedValues section in the capabilities document.
     """
     # WFS parameters
     SERVICE="WFS"
@@ -192,6 +188,8 @@ class DownloadWFS:
       xmlInMemory = io.BytesIO(response.content)
       tree = xmlTree.parse(xmlInMemory)
       root = tree.getroot()
+    else:
+      raise Exception("Response from service is bad. URL("+url+")")
     
     return root
 

@@ -9,7 +9,7 @@ CURRENT_MONTH=$(date +%s -d $CURRENT_MONTH)
 # if the control file exists, load the date of the last process performed.
 if [[ -f "$DATA_DIR/processed-month-control" ]]; then
   PROCESSED_MONTH=$(cat $DATA_DIR/processed-month-control)
-  if [ "$PROCESSED_MONTH" -eq "$CURRENT_MONTH" ]; then
+  if [[ "$PROCESSED_MONTH" -eq "$CURRENT_MONTH" ]]; then
     echo "Skip the process. There is no new data."
     exit
   fi
