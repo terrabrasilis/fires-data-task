@@ -169,7 +169,7 @@ class DownloadWFS:
     CQL_FILTER="{0} AND satelite='AQUA_M-T' AND continente_id=8".format(CQL_FILTER)
     CQL_FILTER="{0} AND pais_complete_id=33 AND id_area_industrial=0".format(CQL_FILTER)
     CQL_FILTER="{0} AND id_tipo_area_industrial NOT IN (1,2,3,4,5)".format(CQL_FILTER)
-    CQL_FILTER="{0} AND bioma IN ('Amazônia','Cerrado')".format(CQL_FILTER)
+    #CQL_FILTER="{0} AND bioma IN ('Amazônia','Cerrado')".format(CQL_FILTER)
     
     allLocalParams=locals()
     allLocalParams.pop("self",None)
