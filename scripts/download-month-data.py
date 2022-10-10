@@ -284,6 +284,7 @@ class DownloadWFS:
     # download Focuses of fire
     self.TARGET="focuses"
     self.__configForTarget()
+    self.numberMatched=0
     #self.__pagination()
     # used to write some information into a file that used for import data process
     self.__setMetadataResults()
