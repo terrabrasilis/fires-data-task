@@ -13,18 +13,19 @@ gdal_rasterize -burn 15 -tr 0.000268999526293 -0.000269000921852 \
 -a_nodata 0 -ot Byte PG:"$PGCONNECTION" \
 -sql "$SQL" "deter_since_${DETER_VIEW_DATE}_pv15.tif"
 
-# 3.1) from step-to-step (gdal3 is needed) changed 30/08/2021
-gdal_proximity.py "deter_since_${DETER_VIEW_DATE}_pv15.tif" "deter_since_${DETER_VIEW_DATE}_pv15_dist.tif" -values 15 -nodata 0 -ot Byte
+# disable buffer calc step in 07/11/2022
+# 3.1) from step-to-step (gdal3 is needed)
+## gdal_proximity.py "deter_since_${DETER_VIEW_DATE}_pv15.tif" "deter_since_${DETER_VIEW_DATE}_pv15_dist.tif" -values 15 -nodata 0 -ot Byte
 
 # 3.3) from step-to-step
-gdal_calc.py -A "deter_since_${DETER_VIEW_DATE}_pv15_dist.tif" --calc="(15*logical_and(A>=0,A<=17))" --NoDataValue=0 --outfile "deter_since_${DETER_VIEW_DATE}_pv15_dist_fat.tif"
+## gdal_calc.py -A "deter_since_${DETER_VIEW_DATE}_pv15_dist.tif" --calc="(15*logical_and(A>=0,A<=17))" --NoDataValue=0 --outfile "deter_since_${DETER_VIEW_DATE}_pv15_dist_fat.tif"
 
 # 2.4) from step-to-step
-gdalbuildvrt prodes_agregado.vrt prodes_agregado_vseg_amz_cerrado.tif "deter_since_${DETER_VIEW_DATE}_pv15_dist_fat.tif"
+gdalbuildvrt prodes_agregado.vrt prodes_agregado_vseg_amz_cerrado.tif "deter_since_${DETER_VIEW_DATE}_pv15.tif"
 gdal_translate -of GTiff -co "COMPRESS=LZW" -co BIGTIFF=YES prodes_agregado.vrt prodes_agregado.tif
 
 # rename DETER's aggregate deforestation, compress and send to download area
-mv "deter_since_${DETER_VIEW_DATE}_pv15_dist_fat.tif" deter_agregado_amz_cerrado.tif
+mv "deter_since_${DETER_VIEW_DATE}_pv15.tif" deter_agregado_amz_cerrado.tif
 zip -j deter_agregado_amz_cerrado.zip deter_agregado_amz_cerrado.tif deter_agregado_amz_cerrado.qml
 mv deter_agregado_amz_cerrado.zip "${DOWNLOAD_AREA}/"
 
