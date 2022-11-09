@@ -115,21 +115,14 @@ def run(host='localhost', port='5432', database='dbname', user='postgres', passw
       
   con.commit()
 
-  upout=None
   # Finally, if you have NULL values for any focus, set the default value.
   if typedata=="prodes":
     query = "UPDATE public.focos_aqua_referencia SET classe_prodes='Outros' WHERE classe_prodes IS NULL;"
-    upout = "UPDATE public.focos_aqua_referencia SET classe_prodes='Outros' WHERE classe_prodes='Vegetacao Secundaria' AND bioma='Cerrado';"
   else:
     query = "UPDATE public.focos_aqua_referencia SET classe_car='Sem CAR' WHERE classe_car IS NULL;"
 
   cur.execute(query)
   con.commit()
-
-  #update outliers for cerrado
-  if upout:
-    cur.execute(upout)
-    con.commit()
 
   cur.close()
   con.close()
