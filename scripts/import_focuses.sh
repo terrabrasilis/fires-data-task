@@ -28,7 +28,7 @@ then
     # obtain the number of rows from the temporary table
     numberMatched=($($PG_BIN/psql $PG_CON -t -c "$COUNT"))
 
-    CHECK_DATA="SELECT num_rows FROM public.acquisition_data_control WHERE start_date='$START_DATE' AND end_date='$END_DATE' AND origin_data='$TARGET'"
+    CHECK_DATA="SELECT num_rows FROM public.acquisition_data_control WHERE start_date='$START_DATE' AND end_date='$END_DATE' AND origin_data='$TARGET' ORDER BY id DESC LIMIT 1"
     # obtain the number of rows from the previous import process, if any
     NUM_ROWS=($($PG_BIN/psql $PG_CON -t -c "$CHECK_DATA"))
     if [[ "$numberMatched" = "$NUM_ROWS" ]];

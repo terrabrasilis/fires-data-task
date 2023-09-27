@@ -13,7 +13,7 @@ then
   source "$DATA_TARGET/acquisition_data_control"
   INSERT_INFOS="INSERT INTO public.acquisition_data_control(start_date, end_date, num_rows, origin_data) "
   INSERT_INFOS=$INSERT_INFOS"VALUES ('$START_DATE', '$END_DATE', $numberMatched,'$TARGET');"
-  CHECK_DATA="SELECT num_rows FROM public.acquisition_data_control WHERE start_date='$START_DATE' AND end_date='$END_DATE' AND origin_data='$TARGET'"
+  CHECK_DATA="SELECT num_rows FROM public.acquisition_data_control WHERE start_date='$START_DATE' AND end_date='$END_DATE' AND origin_data='$TARGET' ORDER BY id DESC LIMIT 1"
 
   # obtain the number of rows from the previous import process, if any
   NUM_ROWS=($($PG_BIN/psql $PG_CON -t -c "$CHECK_DATA"))
