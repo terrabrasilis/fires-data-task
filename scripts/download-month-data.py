@@ -19,7 +19,7 @@ https://gist.github.com/andre-carvalho/45eaf4378fbf91d0514a995a80c69d98
 
 import requests, os, io
 from requests.auth import HTTPBasicAuth
-from datetime import datetime
+from datetime import datetime, timedelta
 from calendar import monthrange
 from xml.etree import ElementTree as xmlTree
 
@@ -47,7 +47,7 @@ class DownloadWFS:
     In this case, this version has been prepared for pagination and the shapefile is
     downloaded in parts.
     """
-    self.START_DATE,self.END_DATE=self.__getLastMonthRangeDate()
+    self.START_DATE,self.END_DATE=self.__getPreviousMonthRangeDate()
     # Data directory for writing downloaded data
     self.DIR=os.path.realpath(os.path.dirname(__file__))
     self.DIR=os.getenv("DATA_DIR", self.DIR)
@@ -67,34 +67,37 @@ class DownloadWFS:
       self.serverLimitByTarget=10000
       user=os.getenv("FOCUSES_USER", user)
       password=os.getenv("FOCUSES_PASS", password)
-      if user and password:
-        self.AUTH=HTTPBasicAuth(user, password)
     else:
-      self.WORKSPACE_NAME="deter-amz"
-      self.LAYER_NAME="deter_amz_auth"
-      self.serverLimitByTarget=100000
+      if self.TARGET=="alerts_amz":
+        self.WORKSPACE_NAME="deter-amz"
+        self.LAYER_NAME="deter_amz_auth"
+        self.serverLimitByTarget=100000
+      else:
+        self.WORKSPACE_NAME="deter-cerrado-nb"
+        self.LAYER_NAME="deter_cerrado_auth"
+        self.serverLimitByTarget=100000
+      
       user=os.getenv("ALERTS_USER", user)
       password=os.getenv("ALERTS_PASS", password)
-      if user and password:
-        self.AUTH=HTTPBasicAuth(user, password)
 
+    if user and password:
+      self.AUTH=HTTPBasicAuth(user, password)
+      
     # The output file name (layer_name_start_date_end_date)
     self.OUTPUT_FILENAME="{0}_{1}_{2}".format(self.LAYER_NAME,self.START_DATE,self.END_DATE)
 
-  def __getLastMonthRangeDate(self):
+  def __getPreviousMonthRangeDate(self):
     """
     The start date and end date are automatically detected using the machine's calendar
     and represent the first and last day of the past month.
     """
-    last_month=(datetime.now().month)-1
-    last_month=last_month if last_month>=10 else "0"+str(last_month)
+    previous_month=(datetime.today().replace(day=1) - timedelta(days=1)).month
+    current_year=datetime.today().year
+    current_year=current_year if datetime.today().month>1 else current_year-1
 
-    current_year=datetime.now().year
-    current_year=current_year if datetime.now().month>1 else current_year-1
-
-    dt0="{0}-{1}-01 00:00:00".format(current_year,last_month)
-    month_days=monthrange(current_year,int(last_month))[1]
-    dt1="{0}-{1}-{2} 23:59:59".format(current_year,last_month,month_days)
+    dt0="{0}-{1}-01 00:00:00".format(current_year,previous_month)
+    month_days=monthrange(current_year,int(previous_month))[1]
+    dt1="{0}-{1}-{2} 23:59:59".format(current_year,previous_month,month_days)
     start_date=datetime.strptime(str(dt0),'%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%dT%H:%M:%S')
     end_date=datetime.strptime(str(dt1),'%Y-%m-%d %H:%M:%S').strftime('%Y-%m-%dT%H:%M:%S')
 
@@ -102,12 +105,12 @@ class DownloadWFS:
 
   def __buildBaseURL(self):
     if self.TARGET=="focuses":
-      host="queimadas.dgi.inpe.br/queimadas"
+      host="queimadas.dgi.inpe.br"
       schema="https"
     else:
       host="terrabrasilis.dpi.inpe.br"
       schema="http"
-    
+
     url="{0}://{1}/geoserver/{2}/{3}/wfs".format(schema,host,self.WORKSPACE_NAME,self.LAYER_NAME)
     return url
 
@@ -122,10 +125,10 @@ class DownloadWFS:
     Building the query string to call the WFS service for DETER alerts.
 
     The parameter: OUTPUTFORMAT, the output format for the WFS GetFeature operation described
-    in the AllowedValues ​​section in the capabilities document.
+    in the AllowedValues section in the capabilities document.
     """
     # Filters example (by date interval and uf)
-    CQL_FILTER="date BETWEEN '{0}' AND '{1}'".format(self.START_DATE,self.END_DATE)
+    CQL_FILTER="view_date BETWEEN '{0}' AND '{1}'".format(self.START_DATE,self.END_DATE)
     # WFS parameters
     SERVICE="WFS"
     REQUEST="GetFeature"
@@ -148,7 +151,7 @@ class DownloadWFS:
     Building the query string to call the WFS service for focuses of fire.
 
     The parameter: OUTPUTFORMAT, the output format for the WFS GetFeature operation described
-    in the AllowedValues ​​section in the capabilities document.
+    in the AllowedValues section in the capabilities document.
     """
     # WFS parameters
     SERVICE="WFS"
@@ -166,7 +169,7 @@ class DownloadWFS:
     CQL_FILTER="{0} AND satelite='AQUA_M-T' AND continente_id=8".format(CQL_FILTER)
     CQL_FILTER="{0} AND pais_complete_id=33 AND id_area_industrial=0".format(CQL_FILTER)
     CQL_FILTER="{0} AND id_tipo_area_industrial NOT IN (1,2,3,4,5)".format(CQL_FILTER)
-    CQL_FILTER="{0} AND bioma='Amazônia'".format(CQL_FILTER)
+    #CQL_FILTER="{0} AND bioma IN ('Amazônia','Cerrado')".format(CQL_FILTER)
     
     allLocalParams=locals()
     allLocalParams.pop("self",None)
@@ -185,6 +188,8 @@ class DownloadWFS:
       xmlInMemory = io.BytesIO(response.content)
       tree = xmlTree.parse(xmlInMemory)
       root = tree.getroot()
+    else:
+      raise Exception("Response from service is bad. URL("+url+")")
     
     return root
 
@@ -267,26 +272,47 @@ class DownloadWFS:
       f.write("END_DATE=\"{0}\"\n".format(self.END_DATE))
       f.write("numberMatched={0}".format(self.numberMatched))
 
+  def __removeMetadataFile(self):
+    """
+    Delete the metadata file if there is an error trying to download the data
+    """
+    output_file="{0}/acquisition_data_control".format(self.DATA_DIR)
+    if os.path.exists(output_file):
+      os.remove(output_file)
+
   def getFocuses(self):
     # download Focuses of fire
     self.TARGET="focuses"
-    self.__pagination()
+    self.__configForTarget()
+    self.numberMatched=0
+    #self.__pagination()
     # used to write some information into a file that used for import data process
     self.__setMetadataResults()
 
   def getAlerts(self):
-    # download DETER Alerts
-    self.TARGET="alerts"
+    # download DETER AMZ
+    self.TARGET="alerts_amz"
+    self.__pagination()
+    # used to write some information into a file that used for import data process
+    self.__setMetadataResults()
+
+    # download DETER CERRADO
+    self.TARGET="alerts_cerrado"
     self.__pagination()
     # used to write some information into a file that used for import data process
     self.__setMetadataResults()
 
   def get(self):
-    self.getFocuses()
-    self.getAlerts()
+    try:
+      self.getFocuses()
+      self.getAlerts()
+    except Exception as error:
+      down.__removeMetadataFile()
+      print("There was an error when trying to download data.")
+      print(error)
 
 # end of class
 
-down=DownloadWFS()
 # Call download for get all data
+down=DownloadWFS()
 down.get()

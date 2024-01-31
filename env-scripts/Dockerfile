@@ -8,12 +8,8 @@
 #--------- Generic stuff all our Dockerfiles should start with so we get caching ------------
 FROM osgeo/gdal:ubuntu-small-3.2.0
 
-ARG VERSION=x.y
-ENV VERSION=$VERSION
-
 LABEL "br.inpe.dpi"="INPE/DPI-TerraBrasilis" \
 br.inpe.dpi.terrabrasilis="script-tasks" \
-version=${VERSION} \
 author="Andre Carvalho" \
 author.email="andre.carvalho@inpe.br" \
 description="Scripts for data preparation of fire focuses."
@@ -24,6 +20,7 @@ RUN apt-get -o Acquire::ForceIPv4=true update \
     cron \
     python3-pip \
     postgis \
+    zip \
     && rm -rf /var/lib/apt/lists/*
 
 # define the timezone to run cron
@@ -32,6 +29,8 @@ ENV TZ=America/Sao_Paulo
 ENV INSTALL_PATH /usr/local
 # the data directory for put generated files 
 ENV SHARED_DIR $INSTALL_PATH/data
+# the common download area
+ENV DOWNLOAD_AREA $INSTALL_PATH/download
 # the scripts directory
 ENV SCRIPT_DIR $INSTALL_PATH/scripts-shell
 
@@ -58,6 +57,6 @@ RUN pip3 install -r $INSTALL_PATH/requirements.txt \
     && ln -s usr/local/bin/docker-entrypoint.sh / # backwards compat
 
 # expose shared dir
-VOLUME ["${SHARED_DIR}"]
+VOLUME ["${SHARED_DIR}", "${DOWNLOAD_AREA}"]
 
 ENTRYPOINT [ "/docker-entrypoint.sh" ]

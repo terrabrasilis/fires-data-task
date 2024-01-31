@@ -11,7 +11,6 @@ else
     echo "Nice, it will be faster than use no-cache option."
 fi
 
-VERSION=$(cat PROJECT_VERSION | grep -oP '(?<="version": ")[^"]*')
 VERSION=$(git describe --tags --abbrev=0)
 GIT_BRANCH=$(git symbolic-ref --short HEAD)
 
@@ -21,7 +20,7 @@ echo " Build new image terrabrasilis/fires-data-task-$GIT_BRANCH:$VERSION "
 echo "/######################################################################/"
 echo
 
-docker build $NO_CACHE -t "terrabrasilis/fires-data-task-$GIT_BRANCH:$VERSION" --build-arg VERSION="$VERSION" -f env-scripts/Dockerfile .
+docker build $NO_CACHE -t "terrabrasilis/fires-data-task-$GIT_BRANCH:$VERSION" -f env-scripts/Dockerfile .
 
 # send to dockerhub
 echo 

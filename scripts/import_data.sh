@@ -13,7 +13,7 @@ then
   source "$DATA_TARGET/acquisition_data_control"
   INSERT_INFOS="INSERT INTO public.acquisition_data_control(start_date, end_date, num_rows, origin_data) "
   INSERT_INFOS=$INSERT_INFOS"VALUES ('$START_DATE', '$END_DATE', $numberMatched,'$TARGET');"
-  CHECK_DATA="SELECT num_rows FROM public.acquisition_data_control WHERE start_date='$START_DATE' AND end_date='$END_DATE' AND origin_data='$TARGET'"
+  CHECK_DATA="SELECT num_rows FROM public.acquisition_data_control WHERE start_date='$START_DATE' AND end_date='$END_DATE' AND origin_data='$TARGET' ORDER BY id DESC LIMIT 1"
 
   # obtain the number of rows from the previous import process, if any
   NUM_ROWS=($($PG_BIN/psql $PG_CON -t -c "$CHECK_DATA"))
@@ -33,7 +33,7 @@ then
 
     # to control the import shape mode
     CREATE_TABLE="YES"
-    for ZIP_FILE in `ls $DATA_TARGET/*.zip | awk {'print $1'}`
+    for ZIP_FILE in `ls $DATA_TARGET/*${START_DATE}*${END_DATE}*.zip | awk {'print $1'}`
     do
       FILE_NAME=`basename $ZIP_FILE`
 
@@ -78,11 +78,16 @@ then
     rm "$DATA_TARGET/acquisition_data_control"
     mv $DATA_TARGET/*.zip "$DATA_DIR/oldshps/"
 
-    if [[ "$TARGET" = "alerts" ]];
+    if [[ "$TARGET" = "alerts_amz" ]];
     then
-      export CTRL_ALERTS=true
+      export CTRL_ALERTS_AMZ=true
     else
-      export CTRL_FOCUSES=true
+      if [[ "$TARGET" = "alerts_cerrado" ]];
+      then
+        export CTRL_ALERTS_CERRADO=true
+      else
+        export CTRL_FOCUSES=true
+      fi
     fi
 
     # copy new data to output table
