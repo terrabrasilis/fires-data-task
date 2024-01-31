@@ -12,6 +12,10 @@ LOGFILE="$DATA_TARGET/copy_focuses_$DATE_LOG.log"
 # verify if control file exists
 if [[ -f "$DATA_TARGET/acquisition_data_control" ]];
 then
+    # We read START_DATE and END_DATE from the "acquisition_data_control" file.
+    # These values are set by the __getPreviousMonthRangeDate function in download-month-data.py
+    # because it has been used in the past to download focus data. After disabling the download, in favor of "general-fires-data-task",
+    # this behavior was maintained.
     source "$DATA_TARGET/acquisition_data_control"
 
     CREATE_TABLE="CREATE TABLE ${TARGET} as"

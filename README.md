@@ -8,6 +8,12 @@ The implementation follows the step by step described in the file ./docs/step-by
 
 The expected periodicity is monthly for the acquisition of new data on the focuses of the Queimadas project and notices of deforestation by the DETER project.
 
+***WARNING***
+
+Downloading Focuses of fire data has been disabled in favor of the [general-fires-data-task](https://github.com/terrabrasilis/general-fires-data-task).
+Focus data is copied by import_focuses.sh using a SQL view.
+
+
 ## Configurations
 
 There are three configuration files and a control table to prepare the execution environment, as follows:

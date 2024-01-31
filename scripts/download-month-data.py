@@ -281,7 +281,13 @@ class DownloadWFS:
       os.remove(output_file)
 
   def getFocuses(self):
-    # download Focuses of fire
+    """
+      DOWNLOAD IS DISABLED!
+      
+      This function is only used to define and provide some metadata for the focus import routine.
+      Downloading Focuses of fire data has been disabled in favor of the "general-fires-data-task".
+      Focus data is copied by import_focuses.sh using a SQL view.
+    """
     self.TARGET="focuses"
     self.__configForTarget()
     self.numberMatched=0
