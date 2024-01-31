@@ -23,12 +23,25 @@ There are three configuration files and a control table to prepare the execution
  - config/pgconfig (database settings to import and process data)
  - public.acquisition_data_control (a control table for imported data)
 
-### Config details
+### Runtime configurations
+
+Some data such as GeoServer URL must be configured using environment variables in the docker command, in the docker stack definition or in the gsconfig file, in the session below.
+
+ > Fragment example of docker stack with the expected env vars
+```
+    environment:
+        GEOSERVER_BASE_URL: http://terrabrasilis.dpi.inpe.br
+        GEOSERVER_BASE_PATH: geoserver
+```
+
+#### Configuration files details
 
  > Content of gsconfig file
 ```txt
 ALERTS_USER="user to login on geoserver of DETER."
 ALERTS_PASS="password to login on geoserver of DETER."
+GEOSERVER_BASE_URL="http://terrabrasilis.dpi.inpe.br"
+GEOSERVER_BASE_PATH="geoserver"
 ```
 
  > Content of pgconfig file
@@ -41,6 +54,9 @@ password="postgres"
 deteroutputtable="deter"
 firesoutputtable="focos_aqua_referencia"
 ```
+
+### Database requirements
+
 
  > Table to control the data acquisition process
 ```sql

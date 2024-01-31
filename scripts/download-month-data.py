@@ -51,6 +51,8 @@ class DownloadWFS:
     # Data directory for writing downloaded data
     self.DIR=os.path.realpath(os.path.dirname(__file__))
     self.DIR=os.getenv("DATA_DIR", self.DIR)
+    self.GEOSERVER_BASE_URL=os.getenv("GEOSERVER_BASE_URL", "https://terrabrasilis.dpi.inpe.br")
+    self.GEOSERVER_BASE_PATH=os.getenv("GEOSERVER_BASE_PATH", "geoserver")
 
   def __configForTarget(self):
     # define the base directory to store downloaded data
@@ -107,11 +109,14 @@ class DownloadWFS:
     if self.TARGET=="focuses":
       host="queimadas.dgi.inpe.br"
       schema="https"
+      gs_path="geoserver"
     else:
-      host="terrabrasilis.dpi.inpe.br"
-      schema="http"
+      gsh = self.GEOSERVER_BASE_URL.split('://')
+      host=gsh[1]
+      schema=gsh[0]
+      gs_path=self.GEOSERVER_BASE_PATH
 
-    url="{0}://{1}/geoserver/{2}/{3}/wfs".format(schema,host,self.WORKSPACE_NAME,self.LAYER_NAME)
+    url="{0}://{1}/{2}/{3}/{4}/wfs".format(schema,host,gs_path,self.WORKSPACE_NAME,self.LAYER_NAME)
     return url
 
   def __buildQueryString(self, OUTPUTFORMAT=None):

@@ -15,8 +15,6 @@ if [[ -f "$DATA_DIR/processed-month-control" ]]; then
   fi
 fi
 
-GEOSERVER_BASE_URL="http://terrabrasilis.dpi.inpe.br"
-GEOSERVER_BASE_PATH="geoserver"
 LAYER_NAME="last_date"
 
 PROJECT_NAME="deter-amz"
