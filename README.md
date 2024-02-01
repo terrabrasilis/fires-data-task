@@ -23,7 +23,7 @@ There are three configuration files and a control table to prepare the execution
  - config/pgconfig (database settings to import and process data)
  - public.acquisition_data_control (a control table for imported data)
 
-### Runtime configurations
+### Runtime Settings
 
 Some data such as GeoServer URL must be configured using environment variables in the docker command, in the docker stack definition or in the gsconfig file, in the session below.
 
@@ -43,6 +43,8 @@ ALERTS_PASS="password to login on geoserver of DETER."
 GEOSERVER_BASE_URL="http://terrabrasilis.dpi.inpe.br"
 GEOSERVER_BASE_PATH="geoserver"
 ```
+*GEOSERVER_BASE_URL and GEOSERVER_BASE_PATH are optional here. It can be provided as env var in the start command, discussed in the "Runtime Settings" section.
+
 
  > Content of pgconfig file
 ```txt

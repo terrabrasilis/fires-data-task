@@ -3,11 +3,14 @@ version: '2'
 
 services:
   fires-data-task:
-    image: 'terrabrasilis/fires-data-task-main:v1.2.2'
+    image: 'terrabrasilis/fires-data-task-main:v1.4.0'
     container_name: fires-data-task
     restart: always
     volumes:
       - '/data/fires/raster:/usr/local/data'
+    environment:
+        GEOSERVER_BASE_URL: http://terrabrasilis.dpi.inpe.br
+        GEOSERVER_BASE_PATH: geoserver
     networks:
       - proxy_default
 
