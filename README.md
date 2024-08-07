@@ -25,7 +25,7 @@ There are three configuration files and a control table to prepare the execution
 
 ### Runtime Settings
 
-Some data such as GeoServer URL must be configured using environment variables in the docker command, in the docker stack definition or in the gsconfig file, in the session below.
+Some data, such as the GeoServer URL, must be configured using environment variables in the docker command, in the docker stack definition, or in the gsconfig file, in the section below.
 
  > Fragment example of docker stack with the expected env vars
 ```
@@ -64,11 +64,11 @@ firesoutputtable="focos_aqua_referencia"
 ```sql
 CREATE TABLE public.acquisition_data_control
 (
-    id integer NOT NULL DEFAULT nextval('acquisition_data_control_id_seq'::regclass),
+    id serial NOT NULL,
     start_date date,
     end_date date,
     num_rows integer,
-    origin_data character varying(80) COLLATE pg_catalog."default",
+    origin_data character varying(80),
     created_at date DEFAULT (now())::date,
     CONSTRAINT acquisition_data_control_id_pk PRIMARY KEY (id)
 );

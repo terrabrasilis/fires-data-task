@@ -1,6 +1,6 @@
 # Passo a passo para executar de forma manual
 
-Descreve o que deve ser seguido para a geração das estatísticas mensais de queimadas no Bioma Amazônia em relação aos desmatamentos (PRODES + DETER) e em relação aos imóveis ruais do CAR.
+Descreve o que deve ser seguido para a geração das estatísticas mensais de queimadas no Bioma Amazônia em relação aos desmatamentos (PRODES + DETER) e em relação aos imóveis rurais do CAR.
 
 ## O que temos aqui?
 
@@ -11,7 +11,7 @@ A forma atual de execução é manual pois os dados de focos de Queimadas não e
 
 ## pré-requisitos
 
-Sáo pré-requisitos para a execução dos scripts:
+São pré-requisitos para a execução dos scripts:
 
 - Acesso SSH ao servidor onde os scripts estão instalados;
 - Obtenção do shapefile de desmatamentos DETER do mês de interesse;
