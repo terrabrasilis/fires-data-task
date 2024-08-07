@@ -1,0 +1,204 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.7.5 Chrome/126.0.6478.183 Electron/31.3.0 Safari/537.36" version="24.7.5" pages="2">
+  <diagram id="C5RBs43oDa-KdzZeNtuy" name="first-flow">
+    <mxGraphModel dx="880" dy="531" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="WIyWlLk6GJQsqaUBKTNV-0" />
+        <mxCell id="WIyWlLk6GJQsqaUBKTNV-1" parent="WIyWlLk6GJQsqaUBKTNV-0" />
+        <mxCell id="A0V8LY2M86FwZwJs9zLw-33" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="WIyWlLk6GJQsqaUBKTNV-3" target="A0V8LY2M86FwZwJs9zLw-32">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="WIyWlLk6GJQsqaUBKTNV-3" value="Is a new month starting?" style="rounded=1;whiteSpace=wrap;html=1;fontSize=12;glass=0;strokeWidth=1;shadow=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+          <mxGeometry x="189" y="80" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="A0V8LY2M86FwZwJs9zLw-7" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="WIyWlLk6GJQsqaUBKTNV-6" target="A0V8LY2M86FwZwJs9zLw-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="A0V8LY2M86FwZwJs9zLw-15" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="WIyWlLk6GJQsqaUBKTNV-6" target="WIyWlLk6GJQsqaUBKTNV-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="WIyWlLk6GJQsqaUBKTNV-6" value="Is there DETER data?" style="rhombus;whiteSpace=wrap;html=1;shadow=0;fontFamily=Helvetica;fontSize=12;align=center;strokeWidth=1;spacing=12;spacingTop=0;verticalAlign=middle;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+          <mxGeometry x="399" y="494" width="140" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="A0V8LY2M86FwZwJs9zLw-2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="WIyWlLk6GJQsqaUBKTNV-7" target="A0V8LY2M86FwZwJs9zLw-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="WIyWlLk6GJQsqaUBKTNV-7" value="Download, store and registry&amp;nbsp;the deforestation alerts from DETER data to last month" style="rounded=1;whiteSpace=wrap;html=1;fontSize=12;glass=0;strokeWidth=1;shadow=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+          <mxGeometry x="602" y="520" width="137" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="A0V8LY2M86FwZwJs9zLw-17" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="A0V8LY2M86FwZwJs9zLw-1" target="A0V8LY2M86FwZwJs9zLw-16">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="A0V8LY2M86FwZwJs9zLw-1" value="Rasterize DETER data" style="whiteSpace=wrap;html=1;rounded=1;glass=0;strokeWidth=1;shadow=0;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="610.75" y="625" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="A0V8LY2M86FwZwJs9zLw-6" value="Abort the biome process." style="rounded=1;whiteSpace=wrap;html=1;shadow=0;strokeWidth=1;spacing=6;spacingTop=-4;fillColor=#fa6800;strokeColor=#C73500;fontColor=#000000;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="409" y="654" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="A0V8LY2M86FwZwJs9zLw-13" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="A0V8LY2M86FwZwJs9zLw-10" target="A0V8LY2M86FwZwJs9zLw-12">
+          <mxGeometry x="0.3333" y="15" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="A0V8LY2M86FwZwJs9zLw-20" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="A0V8LY2M86FwZwJs9zLw-10" target="A0V8LY2M86FwZwJs9zLw-19">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="A0V8LY2M86FwZwJs9zLw-10" value="Do we have active fire data from the last month?" style="rhombus;perimeterSpacing=0;whiteSpace=wrap;html=1;spacingTop=0;spacing=12;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="179" y="334" width="140" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="A0V8LY2M86FwZwJs9zLw-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="A0V8LY2M86FwZwJs9zLw-12" target="A0V8LY2M86FwZwJs9zLw-26">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="779" y="389" />
+              <mxPoint x="779" y="899" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="A0V8LY2M86FwZwJs9zLw-12" value="Download, store and registry" style="rounded=1;whiteSpace=wrap;html=1;spacingTop=0;spacing=12;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="399" y="359" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="A0V8LY2M86FwZwJs9zLw-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="A0V8LY2M86FwZwJs9zLw-16" target="A0V8LY2M86FwZwJs9zLw-22">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="A0V8LY2M86FwZwJs9zLw-16" value="Join to PRODES raster" style="rounded=1;whiteSpace=wrap;html=1;glass=0;strokeWidth=1;shadow=0;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="610.25" y="729" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="A0V8LY2M86FwZwJs9zLw-21" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="A0V8LY2M86FwZwJs9zLw-19" target="WIyWlLk6GJQsqaUBKTNV-6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="A0V8LY2M86FwZwJs9zLw-23" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="A0V8LY2M86FwZwJs9zLw-19" target="A0V8LY2M86FwZwJs9zLw-22">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="A0V8LY2M86FwZwJs9zLw-19" value="Does this biome have DETER?" style="rhombus;whiteSpace=wrap;html=1;shadow=0;fontFamily=Helvetica;fontSize=12;align=center;strokeWidth=1;spacing=12;spacingTop=0;verticalAlign=middle;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="179" y="494" width="140" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="A0V8LY2M86FwZwJs9zLw-27" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="A0V8LY2M86FwZwJs9zLw-22" target="A0V8LY2M86FwZwJs9zLw-26">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="A0V8LY2M86FwZwJs9zLw-22" value="Select the PRODES and TerraClass files" style="rounded=1;whiteSpace=wrap;html=1;shadow=0;strokeWidth=1;spacing=12;spacingTop=0;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="189" y="729" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="A0V8LY2M86FwZwJs9zLw-29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="A0V8LY2M86FwZwJs9zLw-26" target="A0V8LY2M86FwZwJs9zLw-28">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="A0V8LY2M86FwZwJs9zLw-26" value="Select the Active fires for the last month" style="rounded=1;whiteSpace=wrap;html=1;shadow=0;strokeWidth=1;spacing=12;spacingTop=0;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="189" y="869" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="A0V8LY2M86FwZwJs9zLw-40" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="A0V8LY2M86FwZwJs9zLw-28" target="A0V8LY2M86FwZwJs9zLw-39">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="A0V8LY2M86FwZwJs9zLw-28" value="Classify points" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="189" y="977" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="A0V8LY2M86FwZwJs9zLw-31" value="Get a biome from the list whose data has not been processed for the last month." style="shape=callout;whiteSpace=wrap;html=1;perimeter=calloutPerimeter;size=10;position=0.79;position2=1;base=19;fillColor=#f9f7ed;strokeColor=#36393d;rounded=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="49" y="140" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="A0V8LY2M86FwZwJs9zLw-35" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="A0V8LY2M86FwZwJs9zLw-32" target="A0V8LY2M86FwZwJs9zLw-34">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="A0V8LY2M86FwZwJs9zLw-36" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="A0V8LY2M86FwZwJs9zLw-32" target="A0V8LY2M86FwZwJs9zLw-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="A0V8LY2M86FwZwJs9zLw-32" value="Do you have an unprocessed biome?" style="rhombus;whiteSpace=wrap;html=1;shadow=0;fontFamily=Helvetica;fontSize=12;align=center;strokeWidth=1;spacing=12;spacingTop=0;verticalAlign=middle;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="179" y="180" width="140" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="A0V8LY2M86FwZwJs9zLw-34" value="END" style="ellipse;whiteSpace=wrap;html=1;shadow=0;strokeWidth=1;spacing=12;spacingTop=0;fillColor=#fa6800;strokeColor=#C73500;fontColor=#000000;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="424" y="212.5" width="45" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="A0V8LY2M86FwZwJs9zLw-37" value="END" style="ellipse;whiteSpace=wrap;html=1;shadow=0;strokeWidth=1;spacing=12;spacingTop=0;fillColor=#fa6800;strokeColor=#C73500;fontColor=#000000;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="424.5" y="1097" width="45" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="A0V8LY2M86FwZwJs9zLw-41" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="A0V8LY2M86FwZwJs9zLw-39" target="A0V8LY2M86FwZwJs9zLw-37">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="A0V8LY2M86FwZwJs9zLw-39" value="Store data and registry the completed status&amp;nbsp;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="189" y="1089.5" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="A0V8LY2M86FwZwJs9zLw-42" value="First flow - the Active fire versus deforestation" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=22;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="22" y="16" width="770" height="40" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="0_DcA4nGzAn7u8D4sxuS" name="second-flow">
+    <mxGraphModel dx="1760" dy="1062" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="QIx1SRBoLS7TyH2JnPLB-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="QIx1SRBoLS7TyH2JnPLB-2" target="QIx1SRBoLS7TyH2JnPLB-30">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="QIx1SRBoLS7TyH2JnPLB-2" value="Is a new month starting?" style="rounded=1;whiteSpace=wrap;html=1;fontSize=12;glass=0;strokeWidth=1;shadow=0;" vertex="1" parent="1">
+          <mxGeometry x="320" y="167" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="QIx1SRBoLS7TyH2JnPLB-11" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="QIx1SRBoLS7TyH2JnPLB-13" target="QIx1SRBoLS7TyH2JnPLB-15">
+          <mxGeometry x="0.3333" y="15" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QIx1SRBoLS7TyH2JnPLB-12" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="QIx1SRBoLS7TyH2JnPLB-13" target="QIx1SRBoLS7TyH2JnPLB-24">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="381" y="607" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QIx1SRBoLS7TyH2JnPLB-13" value="Do we have active fire data from the last month?" style="rhombus;perimeterSpacing=0;whiteSpace=wrap;html=1;spacingTop=0;spacing=12;" vertex="1" parent="1">
+          <mxGeometry x="310" y="421" width="140" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="QIx1SRBoLS7TyH2JnPLB-14" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="QIx1SRBoLS7TyH2JnPLB-15" target="QIx1SRBoLS7TyH2JnPLB-24">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="771" y="476" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="QIx1SRBoLS7TyH2JnPLB-15" value="Download, store and registry" style="rounded=1;whiteSpace=wrap;html=1;spacingTop=0;spacing=12;" vertex="1" parent="1">
+          <mxGeometry x="530" y="446" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="DBsAN7JqZ03TEM3neoch-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="QIx1SRBoLS7TyH2JnPLB-24" target="DBsAN7JqZ03TEM3neoch-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="QIx1SRBoLS7TyH2JnPLB-24" value="Select the Active fires for the last month" style="rounded=1;whiteSpace=wrap;html=1;shadow=0;strokeWidth=1;spacing=12;spacingTop=0;" vertex="1" parent="1">
+          <mxGeometry x="320" y="602" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="QIx1SRBoLS7TyH2JnPLB-25" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="QIx1SRBoLS7TyH2JnPLB-26" target="QIx1SRBoLS7TyH2JnPLB-34">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="QIx1SRBoLS7TyH2JnPLB-26" value="Classify points" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;" vertex="1" parent="1">
+          <mxGeometry x="320" y="831" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="QIx1SRBoLS7TyH2JnPLB-27" value="Get a biome from the list whose data has not been processed for the last month." style="shape=callout;whiteSpace=wrap;html=1;perimeter=calloutPerimeter;size=10;position=0.79;position2=1;base=19;fillColor=#f9f7ed;strokeColor=#36393d;rounded=1;" vertex="1" parent="1">
+          <mxGeometry x="180" y="227" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="QIx1SRBoLS7TyH2JnPLB-28" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="QIx1SRBoLS7TyH2JnPLB-30" target="QIx1SRBoLS7TyH2JnPLB-31">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="QIx1SRBoLS7TyH2JnPLB-29" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="QIx1SRBoLS7TyH2JnPLB-30" target="QIx1SRBoLS7TyH2JnPLB-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="QIx1SRBoLS7TyH2JnPLB-30" value="Do you have an unprocessed biome?" style="rhombus;whiteSpace=wrap;html=1;shadow=0;fontFamily=Helvetica;fontSize=12;align=center;strokeWidth=1;spacing=12;spacingTop=0;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="310" y="267" width="140" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="QIx1SRBoLS7TyH2JnPLB-31" value="END" style="ellipse;whiteSpace=wrap;html=1;shadow=0;strokeWidth=1;spacing=12;spacingTop=0;fillColor=#fa6800;strokeColor=#C73500;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="555" y="299.5" width="45" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="QIx1SRBoLS7TyH2JnPLB-32" value="END" style="ellipse;whiteSpace=wrap;html=1;shadow=0;strokeWidth=1;spacing=12;spacingTop=0;fillColor=#fa6800;strokeColor=#C73500;fontColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="555.5" y="949" width="45" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="QIx1SRBoLS7TyH2JnPLB-33" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="QIx1SRBoLS7TyH2JnPLB-34" target="QIx1SRBoLS7TyH2JnPLB-32">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="QIx1SRBoLS7TyH2JnPLB-34" value="Store data and registry the completed status&amp;nbsp;" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="320" y="941.5" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="QIx1SRBoLS7TyH2JnPLB-35" value="Second flow - the Active fire versus CAR" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=22;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="22" y="16" width="770" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="DBsAN7JqZ03TEM3neoch-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="DBsAN7JqZ03TEM3neoch-5" target="QIx1SRBoLS7TyH2JnPLB-26">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="380" y="821" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DBsAN7JqZ03TEM3neoch-5" value="Select the CAR raster file" style="rounded=1;whiteSpace=wrap;html=1;shadow=0;strokeWidth=1;spacing=12;spacingTop=0;" vertex="1" parent="1">
+          <mxGeometry x="320" y="717" width="120" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
