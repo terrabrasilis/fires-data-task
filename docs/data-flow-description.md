@@ -4,8 +4,8 @@ Used to standardize and communicate the data flow used to generate the time seri
 
 There are two flows to produce the desired data.
 
- - Active fires x Deforestations;
- - Active fires x CAR;
+ - [Active fires x Deforestations](./fire-classification-flow-first-flow.png);
+ - [Active fires x CAR](./fire-classification-flow-second-flow.png);
 
 ### Input data
 
