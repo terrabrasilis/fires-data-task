@@ -12,8 +12,8 @@ There are two flows to produce the desired data.
 There are five input data used to produce this dataset.
 
  - Fire data: geographical coordinates of active fires, extracted from images of the reference satellite - AQUA/MODIS afternoon passages - obtained at Portal Queimadas-INPE;
- - Consolidated deforestation: PRODES database aggregating all deforestation already mapped two years ago or more;
- - Recent deforestation: deforested areas mapped by PRODES two years ago or earlier, plus deforestation alerts mapped between the last available PRODES year and the last month for which DETER data is available;
+ - Consolidated deforestation: PRODES database aggregating all deforestation already mapped three years ago or more;
+ - Recent deforestation: deforested areas mapped by PRODES three years ago or earlier, plus deforestation alerts mapped between the last available PRODES year and the last month for which DETER data is available;
  - Secondary Vegetation: The latest TerraClass secondary vegetation mask for each biome;
  - CAR rural property: the preprocessed Rural Environmental Registry (CAR);
 

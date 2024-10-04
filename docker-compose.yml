@@ -9,8 +9,11 @@ services:
     volumes:
       - '/data/fires/raster:/usr/local/data'
     environment:
-        GEOSERVER_BASE_URL: http://terrabrasilis.dpi.inpe.br
-        GEOSERVER_BASE_PATH: geoserver
+        PG_DETER_HOST: 192.168.1.17
+        PG_DETER_PORT: 5432
+        PG_FIRES_HOST: 192.168.1.18
+        PG_FIRES_PORT: 5432
+        DETER_VIEW_DATE: '2023-08-01'
     networks:
       - proxy_default
 
