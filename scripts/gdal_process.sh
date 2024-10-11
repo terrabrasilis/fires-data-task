@@ -1,43 +1,125 @@
 #!/bin/bash
-OUTPUT_TABLE=$deteroutputtable
-SQL="SELECT geom FROM "$OUTPUT_TABLE" WHERE view_date >= '$DETER_VIEW_DATE' "
-SQL=$SQL"and classname in ('DESMATAMENTO_VEG','DESMATAMENTO_CR','MINERACAO')"
-PGCONNECTION="host=$host port=$port dbname=$database user=$user password=$PGPASSWORD"
+#
+# This script is used to produce one Geotiff file with PRODES + DETER data
+# Its file is used by Active Fires classify process to Fires Dashboard
+OUTPUT_FILE="prodes_agregado.tif"
 
+# got to de work directory
 cd $DATA_DIR"/"
+# remove old output file
+rm ${OUTPUT_FILE}
 
-# 2.3) from step-to-step
-gdal_rasterize -burn 15 -tr 0.000268999526293 -0.000269000921852 \
--te -73.9783164 -24.6847207 -41.5219096 5.2714909 \
+
+# ###############################################################
+# PRODES products - input files
+# ###############################################################
+#   p1 = product 1 - prodes base file (forest + no-forest + hydrography)
+#   p2 = product 2 - consolidate deforestation 
+#   p3 = product 3 - recent deforestation
+PRODES_P1="fires_dashboard_prodes_p1.tif"
+PRODES_P2="fires_dashboard_prodes_p2.tif"
+PRODES_P3="fires_dashboard_prodes_p3.tif"
+
+# ###############################################################
+# Prepare DETER data from last year PRODES
+# ###############################################################
+#   pixel value
+#   15 = recent deforestation
+#   16 = recent deforestation buffer
+pv_rd=15
+pv_rdb=16
+
+# DETER - vector to raster
+SQL="SELECT geom FROM public.deter WHERE view_date >= '$DETER_VIEW_DATE';"
+
+gdal_rasterize -burn ${pv_rd} -tr 0.0002657497628524051257 -0.0002657504795300113837 \
+-te -73.9831821589999521 -33.7473232569939228 -28.8479766863846123 5.2714908999999999 \
 -co "COMPRESS=LZW" \
 -a_nodata 0 -ot Byte PG:"$PGCONNECTION" \
--sql "$SQL" "deter_since_${DETER_VIEW_DATE}_pv15.tif"
+-sql "$SQL" "deter_since_${DETER_VIEW_DATE}_pv${pv_rd}.tif"
 
-# disable buffer calc step in 07/11/2022
-# 3.1) from step-to-step (gdal3 is needed)
-## gdal_proximity.py "deter_since_${DETER_VIEW_DATE}_pv15.tif" "deter_since_${DETER_VIEW_DATE}_pv15_dist.tif" -values 15 -nodata 0 -ot Byte
+# ###############################################################
+# Merge DETER and the last 3 years of PRODES
+# ###############################################################
 
-# 3.3) from step-to-step
-## gdal_calc.py -A "deter_since_${DETER_VIEW_DATE}_pv15_dist.tif" --calc="(15*logical_and(A>=0,A<=17))" --NoDataValue=0 --outfile "deter_since_${DETER_VIEW_DATE}_pv15_dist_fat.tif"
+# remove old DETER + PRODES Geotiff
+rm fires_dashboard_deter_prodes_p3.tif
 
-# 2.4) from step-to-step
-gdalbuildvrt prodes_agregado.vrt prodes_agregado_vseg_amz_cerrado.tif "deter_since_${DETER_VIEW_DATE}_pv15.tif"
-gdal_translate -of GTiff -co "COMPRESS=LZW" -co BIGTIFF=YES prodes_agregado.vrt prodes_agregado.tif
+# merge
+gdalbuildvrt fires_dashboard_deter_prodes.vrt ${PRODES_P3} "deter_since_${DETER_VIEW_DATE}_pv${pv_rd}.tif"
+gdal_translate -of GTiff -co "COMPRESS=LZW" -co BIGTIFF=YES fires_dashboard_deter_prodes.vrt fires_dashboard_deter_prodes.tif
 
-# rename DETER's aggregate deforestation, compress and send to download area
-mv "deter_since_${DETER_VIEW_DATE}_pv15.tif" deter_agregado_amz_cerrado.tif
-zip -j deter_agregado_amz_cerrado.zip deter_agregado_amz_cerrado.tif deter_agregado_amz_cerrado.qml
-mv deter_agregado_amz_cerrado.zip "${DOWNLOAD_AREA}/"
+# build proximity map
+gdal_proximity.py -co "COMPRESS=LZW" -co "BIGTIFF=YES" \
+fires_dashboard_deter_prodes.tif fires_dashboard_deter_prodes_dist.tif -values ${pv_rd} -nodata 0 -ot Byte
 
-# remove intermediary data
-#rm deter_since_"${DETER_VIEW_DATE}"_pv15*
-rm deter_agregado_amz_cerrado.tif
+# buffer calc
+gdal_calc.py --co="COMPRESS=LZW" --co="BIGTIFF=YES" --NoDataValue=0 \
+-A fires_dashboard_deter_prodes_dist.tif --type=Byte --quiet \
+--calc="((A<=0)*${pv_rd} + ${pv_rdb}*logical_and(A>=1,A<=17))" \
+--outfile fires_dashboard_deter_prodes_p3.tif
 
-# 4) from step-to-step
-python3 $SCRIPT_DIR"/get-class.py" -H $host -P $port -d $database -u $user -p $password -t prodes -D "$DATA_DIR"
-python3 $SCRIPT_DIR"/get-class.py" -H $host -P $port -d $database -u $user -p $password -t car -D "$DATA_DIR"
+# ###############################################################
+# Apply buffer into PRODES consolidate deforestation
+# ###############################################################
 
-if $CTRL_ALERTS_AMZ && $CTRL_ALERTS_CERRADO && $CTRL_FOCUSES;
+# If prodes buffer file exists and the md5sum of original input do not change, avoid rebuild the buffer.
+P2_MD5=""
+P2_MD5_CHECK=""
+# if p2 input file exists, do md5 sum
+if [[ -f "${PRODES_P2}" ]];
 then
-  echo "$CURRENT_MONTH" > "$DATA_DIR/processed-month-control"
-fi
+    P2_MD5_CHECK=$(md5sum "${PRODES_P2}" |cut -d' ' -f1)
+fi;
+
+# if buffer file and md5 file exists, read the old md5 sum
+if [[ -f "fires_dashboard_prodes_buffer_p2.tif" && -f "${PRODES_P2}.md5" ]];
+then
+    P2_MD5=$(cat "${PRODES_P2}.md5")
+fi;
+
+# when p2 input file changes, then we rebuild the buffer over p2
+if [[ ! "${P2_MD5_CHECK}" = "" && ! "${P2_MD5}" = "${P2_MD5_CHECK}" ]];
+then
+    #   pixel value
+    #   10 = consolidate deforestation
+    #   11 = consolidate deforestation buffer
+    pv_cd=10
+    pv_cdb=11
+
+    # build proximity map
+    gdal_proximity.py -co "COMPRESS=LZW" -co "BIGTIFF=YES" \
+    ${PRODES_P2} fires_dashboard_prodes_p2_dist.tif -values ${pv_cd} -nodata 0 -ot Byte
+
+    # buffer calc
+    gdal_calc.py --co="COMPRESS=LZW" --co="BIGTIFF=YES" --NoDataValue=0 \
+    -A "fires_dashboard_prodes_p2_dist.tif" --type=Byte --quiet \
+    --calc="((A<=0)*${pv_cd} + ${pv_cdb}*logical_and(A>=1,A<=17))" \
+    --outfile="fires_dashboard_prodes_buffer_p2.tif"
+
+    # remove intermediary file
+    rm fires_dashboard_prodes_p2_dist.tif
+
+    # store new md5sum to use in next time
+    echo "${P2_MD5_CHECK}" > "${PRODES_P2}.md5"
+fi;
+
+# ###############################################################
+# Merge DETER + PRODES
+# ###############################################################
+
+# merge prodes base file + prodes old supression + prodes/deter recent supression
+gdalbuildvrt prodes_agregado.vrt ${PRODES_P1} \
+fires_dashboard_prodes_buffer_p2.tif fires_dashboard_deter_prodes_p3.tif
+gdal_translate -of GTiff -co "COMPRESS=LZW" -co BIGTIFF=YES prodes_agregado.vrt ${OUTPUT_FILE}
+
+# ###############################################################
+# Remove intermediary files to release disk space
+# ###############################################################
+
+rm fires_dashboard_deter_prodes.tif
+rm deter_since_"${DETER_VIEW_DATE}"_pv${pv_rd}.tif
+rm fires_dashboard_deter_prodes_dist.tif
+
+# return to the old path
+cd -

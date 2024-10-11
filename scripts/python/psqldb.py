@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import os
 import psycopg2
-from python.config_loader import ConfigLoader
+from config_loader import ConfigLoader
 
 class ConnectionError(BaseException):
     """
@@ -119,7 +119,7 @@ class PsqlDB:
     def rollback(self):
         # if is connected
         if self.conn is not None:
-            # commit the changes
+            # roll back the changes
             self.conn.rollback()
 
     def execQuery(self, query, isInsert=None):
@@ -131,9 +131,9 @@ class PsqlDB:
             self.cur.execute(query)
 
             if isInsert:
-                data=self.cur.fetchone()
-                if(data):
-                    return data[0]
+                rowcount=self.cur.rowcount
+                if rowcount>=0:
+                    return rowcount
                 else:
                     return None
 
