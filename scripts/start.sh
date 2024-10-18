@@ -1,10 +1,9 @@
 #!/bin/bash
 #
 # ONLY to debug in localhost
-# SCRIPT_DIR=`pwd`
-# SHARED_DIR=$SCRIPT_DIR"/../data"
-# DETER_VIEW_DATE="2023-08-01"
-#
+## SCRIPT_DIR=`pwd`
+## SHARED_DIR=$SCRIPT_DIR"/../data"
+## DETER_VIEW_DATE="2023-08-01"
 
 # to store run log
 DATE_LOG=$(date +"%Y-%m-%d_%H:%M:%S")
