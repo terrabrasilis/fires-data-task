@@ -6,7 +6,7 @@ Automation or semi-automation to prepare data of active fire for the panel of fo
 
 The implementation follows the step by step described in the file ./docs/step-by-step-description.txt.
 
-The expected periodicity is monthly for the acquisition of new data on the focuses of the Queimadas project and notices of deforestation by the DETER project.
+The expected periodicity is monthly for the acquisition of new data on the focuses of the Queimadas project and notices of deforestation by the DETER projects.
 
 ***WARNING***
 
