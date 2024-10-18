@@ -18,6 +18,7 @@ description="Scripts for data preparation of fire focuses."
 RUN apt-get -o Acquire::ForceIPv4=true update \
     && apt-get install -y \
     cron \
+    gdal-bin \
     python3-gdal \
     python3-pip \
     postgis \
