@@ -3,11 +3,11 @@ version: '2'
 
 services:
   fires-data-task:
-    image: 'terrabrasilis/fires-data-task-main:v1.4.0'
+    image: 'terrabrasilis/fires-data-task-all-biomes:v1.5.1'
     container_name: fires-data-task
     restart: always
     volumes:
-      - '/data/fires/raster:/usr/local/data'
+      - './data:/usr/local/data'
     environment:
         DETER_VIEW_DATE: '2023-08-01'
     networks:
@@ -15,4 +15,3 @@ services:
 
 networks:
   proxy_default:
-    external: true
