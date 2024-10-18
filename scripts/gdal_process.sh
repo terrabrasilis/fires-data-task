@@ -31,6 +31,13 @@ PRODES_P1="fires_dashboard_prodes_p1.tif"
 PRODES_P2="fires_dashboard_prodes_p2.tif"
 PRODES_P3="fires_dashboard_prodes_p3.tif"
 
+if [[ ! -f "${PRODES_P1}" || ! -f "${PRODES_P2}" || ! -f "${PRODES_P3}" ]]; then
+    echo "Input files not found, abort."
+    echo "${PRODES_P1}"
+    echo "${PRODES_P2}"
+    echo "${PRODES_P3}"
+    exit 1
+fi;
 # ###############################################################
 # Prepare DETER data from last year PRODES
 # ###############################################################
@@ -59,27 +66,32 @@ if [[ -f "fires_dashboard_deter_prodes_p3.tif" ]]; then
     rm fires_dashboard_deter_prodes_p3.tif
 fi;
 
-DT=$(date +"%Y-%m-%d_%H:%M:%S")
-echo "Start merge for PRODES+DETER: ${DT}"
-# merge
-gdalbuildvrt fires_dashboard_deter_prodes.vrt "${PRODES_P3}" "deter_since_${DETER_VIEW_DATE}_pv${pv_rd}.tif"
-gdal_translate -of GTiff -co "COMPRESS=LZW" -co "BIGTIFF=YES" fires_dashboard_deter_prodes.vrt fires_dashboard_deter_prodes.tif
+if [[ -f "deter_since_${DETER_VIEW_DATE}_pv${pv_rd}.tif" ]]; then
 
-DT=$(date +"%Y-%m-%d_%H:%M:%S")
-echo "Start proximity build for PRODES+DETER: ${DT}"
-# build proximity map
-gdal_proximity.py -co "COMPRESS=LZW" -co "BIGTIFF=YES" \
-fires_dashboard_deter_prodes.tif fires_dashboard_deter_prodes_dist.tif \
--values ${pv_rd} -nodata 0 -ot Byte
+    DT=$(date +"%Y-%m-%d_%H:%M:%S")
+    echo "Start merge for PRODES+DETER: ${DT}"
+    # merge
+    gdalbuildvrt fires_dashboard_deter_prodes.vrt "${PRODES_P3}" "deter_since_${DETER_VIEW_DATE}_pv${pv_rd}.tif"
+    gdal_translate -of GTiff -co "COMPRESS=LZW" -co "BIGTIFF=YES" fires_dashboard_deter_prodes.vrt fires_dashboard_deter_prodes.tif
 
-DT=$(date +"%Y-%m-%d_%H:%M:%S")
-echo "Start buffer calc for PRODES+DETER: ${DT}"
-# buffer calc
-gdal_calc.py --co="COMPRESS=LZW" --co="BIGTIFF=YES" --NoDataValue=0 \
--A fires_dashboard_deter_prodes_dist.tif --type=Byte --quiet \
---calc="((A<=0)*${pv_rd} + ${pv_rdb}*logical_and(A>=1,A<=17))" \
---outfile="fires_dashboard_deter_prodes_p3.tif"
+    DT=$(date +"%Y-%m-%d_%H:%M:%S")
+    echo "Start proximity build for PRODES+DETER: ${DT}"
+    # build proximity map
+    gdal_proximity.py -co "COMPRESS=LZW" -co "BIGTIFF=YES" \
+    fires_dashboard_deter_prodes.tif fires_dashboard_deter_prodes_dist.tif \
+    -values ${pv_rd} -nodata 0 -ot Byte
 
+    DT=$(date +"%Y-%m-%d_%H:%M:%S")
+    echo "Start buffer calc for PRODES+DETER: ${DT}"
+    # buffer calc
+    gdal_calc.py --co="COMPRESS=LZW" --co="BIGTIFF=YES" --NoDataValue=0 \
+    -A fires_dashboard_deter_prodes_dist.tif --type=Byte --quiet --overwrite \
+    --calc="((A<=0)*${pv_rd} + ${pv_rdb}*logical_and(A>=1,A<=17))" \
+    --outfile="fires_dashboard_deter_prodes_p3.tif"
+else
+    echo "File not found (deter_since_"${DETER_VIEW_DATE}"_pv"${pv_rd}".tif). Abort."
+    exit 1
+fi;
 
 # ###############################################################
 # Apply buffer into PRODES consolidate deforestation
@@ -119,12 +131,11 @@ then
     echo "Start buffer calc for OLD PRODES: ${DT}"
     # buffer calc
     gdal_calc.py --co="COMPRESS=LZW" --co="BIGTIFF=YES" --NoDataValue=0 \
-    -A "fires_dashboard_prodes_p2_dist.tif" --type=Byte --quiet \
+    -A "fires_dashboard_prodes_p2_dist.tif" --type=Byte --quiet --overwrite \
     --calc="((A<=0)*${pv_cd} + ${pv_cdb}*logical_and(A>=1,A<=17))" \
     --outfile="fires_dashboard_prodes_buffer_p2.tif"
 
     # remove intermediary file
-    
     if [[ -f "fires_dashboard_prodes_p2_dist.tif" ]]; then
         rm fires_dashboard_prodes_p2_dist.tif
     fi;
@@ -137,12 +148,20 @@ fi;
 # Build the final file
 # ###############################################################
 
-DT=$(date +"%Y-%m-%d_%H:%M:%S")
-echo "Start merge the three parts: ${DT}"
-# merge prodes base file + prodes old supression + prodes/deter recent supression
-gdalbuildvrt ${OUTPUT_FILE}".vrt" ${PRODES_P1} \
-fires_dashboard_prodes_buffer_p2.tif fires_dashboard_deter_prodes_p3.tif
-gdal_translate -of GTiff -co "COMPRESS=LZW" -co "BIGTIFF=YES" ${OUTPUT_FILE}".vrt" ${OUTPUT_FILE}".tif"
+if [[ -f "fires_dashboard_prodes_buffer_p2.tif" && -f "fires_dashboard_deter_prodes_p3.tif" ]]; then
+
+    DT=$(date +"%Y-%m-%d_%H:%M:%S")
+    echo "Start merge the three parts: ${DT}"
+
+    # merge prodes base file + prodes old supression + prodes/deter recent supression
+    gdalbuildvrt ${OUTPUT_FILE}".vrt" ${PRODES_P1} \
+    fires_dashboard_prodes_buffer_p2.tif fires_dashboard_deter_prodes_p3.tif
+
+    gdal_translate -of GTiff -co "COMPRESS=LZW" -co "BIGTIFF=YES" ${OUTPUT_FILE}".vrt" ${OUTPUT_FILE}".tif"
+else
+    echo "Files not found (fires_dashboard_deter_prodes_p3.tif and/or fires_dashboard_deter_prodes_p3.tif). Abort."
+    exit 1
+fi;
 
 # ###############################################################
 # Remove intermediary files to release disk space
