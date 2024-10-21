@@ -3,7 +3,7 @@ version: '2'
 
 services:
   fires-data-task:
-    image: 'terrabrasilis/fires-data-task-all-biomes:v1.5.1'
+    image: 'terrabrasilis/fires-data-task-all-biomes:v1.5.2'
     container_name: fires-data-task
     restart: always
     volumes:
