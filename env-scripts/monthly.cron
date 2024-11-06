@@ -1,3 +1,0 @@
-# m h  dom mon dow   command
-# At 1 am run the task once every day between the 2th and 10th of each month.
-00 01 * * * /bin/bash /usr/local/exec_monthly.sh
