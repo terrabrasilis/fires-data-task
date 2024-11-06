@@ -217,7 +217,6 @@ class CopyData:
 	            WHERE data >= '{self.__getLastMonthDate()}'::date;
             """
     self.db.execQuery(query=delete)
-    self.db.commit()
 
   def __copyFIRESData(self, db):
     """
