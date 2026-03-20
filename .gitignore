@@ -1,5 +1,5 @@
 **/step-to-step-with-sensitive-data.txt
 **/pgconfig
-**/gsconfig
 **/data
 **/*.log
+**/*.pyc

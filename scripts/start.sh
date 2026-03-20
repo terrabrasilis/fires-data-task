@@ -1,29 +1,48 @@
 #!/bin/bash
-# to debug in localhost
-# SCRIPT_DIR=`pwd`
-# SHARED_DIR=$SCRIPT_DIR"/../data"
-# to store run log
-DATE_LOG=$(date +"%Y-%m-%d_%H:%M:%S")
+#
+# ONLY to debug in localhost
+## SCRIPT_DIR=`pwd`
+## SHARED_DIR=$SCRIPT_DIR"/../data"
+## DETER_VIEW_DATE="2023-08-01"
+
 # The data work directory.
-DATA_DIR=$SHARED_DIR
-export DATA_DIR
+export DATA_DIR=${SHARED_DIR}
 
 # go to the scripts directory
-cd $SCRIPT_DIR
-# Includes verification of new existing and unprocessed data.
-. ./deter_trigger.sh >> "$DATA_DIR/deter_trigger_$DATE_LOG.log" 2>&1
-# The view date reference of DETER used to deter_rasterize in the SQL filter. (view_date >= '2019-08-01')
-DETER_VIEW_DATE=$(cat $DATA_DIR/config/deter_view_date)
-# load geoserver user and password from config file in config/gsconfig
-. ./gsconfig.sh
-# get focuses and alerts for last month
-python3 download-month-data.py
+cd ${SCRIPT_DIR}
 
+echo "#############################################"
+echo "# Starting copy DETER and Active Fires data"
+echo "# $(date +"%Y-%m-%d %H:%M:%S")"
+echo "#############################################"
+# update focuses and alerts
+python3 python/copy_data.py
+
+echo "#############################################"
+echo "# Starting rasterize process with GDAL"
+echo "# $(date +"%Y-%m-%d %H:%M:%S")"
+echo "#############################################"
 # load postgres parameters from config file in config/pgconfig
 . ./dbconf.sh
+. ./gdal_process.sh
 
-. ./import_focuses.sh >> "$DATA_DIR/import_focuses_$DATE_LOG.log" 2>&1
+echo "#############################################"
+echo "# Starting classify - Active Fires x PRODES"
+echo "# $(date +"%Y-%m-%d %H:%M:%S")"
+echo "#############################################"
+# update focuses classification
+export DATA_TYPE="prodes"
+python3 python/classify_data.py
 
-. ./import_alerts.sh >> "$DATA_DIR/import_alerts_$DATE_LOG.log" 2>&1
+echo "#############################################"
+echo "# Starting classify - Active Fires x CAR"
+echo "# $(date +"%Y-%m-%d %H:%M:%S")"
+echo "#############################################"
 
-. ./gdal_process.sh >> "$DATA_DIR/gdal_process_$DATE_LOG.log" 2>&1
+export DATA_TYPE="car"
+python3 python/classify_data.py
+
+echo "#############################################"
+echo "# The end"
+echo "# $(date +"%Y-%m-%d %H:%M:%S")"
+echo "#############################################"
