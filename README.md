@@ -13,6 +13,25 @@ The expected periodicity is daily for the acquisition of new data on the focuses
 Downloading Focuses of fire data has been disabled in favor of the [general-fires-data-task](https://github.com/terrabrasilis/general-fires-data-task).
 Focus data is copied by copy_data.py using a SQL view.
 
+## Input Data Details
+
+The input data consisted of Prodes and Deter data for the biomes where they exist.
+
+For the purposes of this classification, the pixel value of the GeoTIFF file has the following correlation:
+
+```txt
+10 consolidated deforestation
+11 consolidated deforestation (buffer 500m)
+15 recent deforestation
+16 recent deforestation (buffer 500m)
+91 Other (whater)
+101 native vegetation (NF)
+100 native vegetation
+```
+
+The GeoTIFF file is updated daily to include the latest DETER data and can be downloaded from:
+https://terrabrasilis.dpi.inpe.br/download/fires-dashboard/daily/fires_dashboard_prodes.tif
+
 
 ## Configurations
 
